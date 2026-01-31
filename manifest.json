@@ -1,0 +1,15 @@
+{
+  "short_name": "SmartSpend",
+  "name": "Smart Spend: Behavioral HUD",
+  "icons": [
+    {
+      "src": "https://raw.githubusercontent.com/srivastavayash100-oss/Smart-Spend/main/icon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#050505",
+  "background_color": "#050505"
+}
