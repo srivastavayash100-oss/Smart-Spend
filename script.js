@@ -387,6 +387,13 @@ function applySetup() {
     state.limits[cat] = (state.monthlyGoal * state.rule[cat]) / 100;
   }
 
+  // OPTIONAL: goal lock karte hi current month ke spends reset karne hain?
+  // Agar haan, to niche ka block uncomment kar de:
+  /*
+  state.spent = { essentials: 0, lifestyle: 0, invest: 0, savings: 0 };
+  state.spends = [];
+  */
+
   note.textContent =
     "Rule locked for this month. Your bars will now move against this line.";
   renderLimits();
@@ -1138,3 +1145,4 @@ async function fullResetAllData() {
   renderSpendsList();
   saveAll();
 }
+ 
