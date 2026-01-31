@@ -4,7 +4,7 @@ let state = {
   currentMonthId: null,
   monthlyGoal: 0,
   rule: { essentials: 40, lifestyle: 30, invest: 20, savings: 10 },
-  activeMode: "balanced", // store which mode is locked
+  activeMode: "balanced",
   spent: { essentials: 0, lifestyle: 0, invest: 0, savings: 0 },
   limits: { essentials: 0, lifestyle: 0, invest: 0, savings: 0 },
   alertsHistory: [],
@@ -31,10 +31,7 @@ window.onload = () => {
     autoFinalizeIfNeeded();
   }
 
-  // Wire modal buttons
   setupModals();
-
-  // Spends click delegation (for performance)
   setupSpendsDelegation();
 
   setTimeout(() => {
@@ -56,7 +53,6 @@ window.onload = () => {
   updateHomeTrophyCTA();
   renderSpendsList();
 
-  // sync mode pills + hidden select from state
   selectMode(state.activeMode || "balanced");
 };
 
@@ -67,7 +63,7 @@ function getCurrentMonthId() {
   return `${y}-${m}`;
 }
 
-/* MONTH HELPERS (for missed months handling) */
+/* MONTH HELPERS */
 
 function monthDiff(fromId, toId) {
   const [fy, fm] = fromId.split("-").map(Number);
@@ -201,7 +197,7 @@ function openInput(options) {
   });
 }
 
-/* AUTO FINALIZE if month changed – now handles missed months */
+/* AUTO FINALIZE & MISSED MONTHS */
 
 function autoFinalizeIfNeeded() {
   const nowId = getCurrentMonthId();
@@ -220,14 +216,12 @@ function autoFinalizeIfNeeded() {
     state.spent.invest +
     state.spent.savings;
 
-  // 1) finalize last active month if there were spends
   if (totalSpent > 0) {
     finalizeCurrentMonth(true); // locks lastId
   } else {
     state.currentMonthId = nowId;
   }
 
-  // 2) add neutral entries for fully missed months (between lastId and nowId)
   const missingCount = diff - 1;
   if (missingCount > 0) {
     for (let i = 1; i <= missingCount; i++) {
@@ -444,6 +438,7 @@ function renderHomeMini() {
   const mini = document.getElementById("homeMiniStats");
   if (!mini) return;
   mini.innerHTML = "";
+
   const totalSpent =
     state.spent.essentials +
     state.spent.lifestyle +
@@ -492,11 +487,6 @@ function renderBarsAndAlerts() {
     const spent = state.spent[cat];
     const limit = state.limits[cat] || 0;
     let percentUsed = limit > 0 ? Math.min((spent / limit) * 100, 160) : 0;
-
-    // Savings bar visually full if rule/limit set
-    if (cat === "savings" && limit > 0) {
-      percentUsed = 100;
-    }
 
     const row = document.createElement("div");
     row.className = "bar-row";
@@ -664,7 +654,7 @@ function addSpend(fromAddScreen = false) {
 
   renderBarsAndAlerts();
   renderHomeMini();
-  appendSingleSpendRow(spendEntry); // performance: only latest DOM append
+  appendSingleSpendRow(spendEntry);
   saveAll();
 }
 
@@ -680,7 +670,6 @@ function calculateMonthlyScore() {
 
   let score = 0;
 
-  // Goal usage
   if (!goal || spentTotal <= goal) {
     score += 20;
   } else {
@@ -690,7 +679,6 @@ function calculateMonthlyScore() {
     else score -= 10;
   }
 
-  // Future-you (Invest + Savings)
   const invLimit = state.limits.invest || 0;
   const savLimit = state.limits.savings || 0;
   const futureLimit = invLimit + savLimit;
@@ -701,10 +689,8 @@ function calculateMonthlyScore() {
     if (fr >= 1.0) score += 30;
     else if (fr >= 0.7) score += 20;
     else if (fr >= 0.4) score += 10;
-    else score += 0;
   }
 
-  // Lifestyle pressure
   const lifeLimit = state.limits.lifestyle || 0;
   const lifeSpent = state.spent.lifestyle;
   if (lifeLimit > 0) {
@@ -988,7 +974,7 @@ function initTiltCards() {
   });
 }
 
-/* SPENDS LIST + RESET + PERFORMANCE IMPROVEMENTS */
+/* SPENDS LIST + PERFORMANCE */
 
 function recalcTotalsFromSpends() {
   state.spent = { essentials: 0, lifestyle: 0, invest: 0, savings: 0 };
@@ -999,7 +985,6 @@ function recalcTotalsFromSpends() {
   });
 }
 
-// Single-row DOM builder
 function appendSingleSpendRow(s, container) {
   const box = container || document.getElementById("spendsList");
   if (!box) return;
@@ -1026,7 +1011,6 @@ function appendSingleSpendRow(s, container) {
     </div>
   `;
 
-  // latest upar dikhana hai
   box.prepend(row);
 }
 
@@ -1040,14 +1024,12 @@ function renderSpendsList() {
     return;
   }
 
-  // Full render once (or after finalize/reset)
   state.spends
     .slice()
     .reverse()
     .forEach(s => appendSingleSpendRow(s, box));
 }
 
-// Event delegation for edit/delete (performance)
 function setupSpendsDelegation() {
   const box = document.getElementById("spendsList");
   if (!box) return;
@@ -1068,7 +1050,7 @@ function setupSpendsDelegation() {
   });
 }
 
-/* EDIT WITH INPUT MODAL */
+/* EDIT SPEND */
 
 async function editSpend(id, rowNode) {
   const entry = state.spends.find(s => s.id === id);
@@ -1097,7 +1079,7 @@ async function editSpend(id, rowNode) {
   }
 }
 
-/* DELETE WITH CONFIRM MODAL */
+/* DELETE SPEND */
 
 async function deleteSpend(id, rowNode) {
   const ok = await openConfirm({
@@ -1122,7 +1104,7 @@ async function deleteSpend(id, rowNode) {
   }
 }
 
-/* FULL RESET WITH CONFIRM MODAL */
+/* FULL RESET */
 
 async function fullResetAllData() {
   const ok = await openConfirm({
