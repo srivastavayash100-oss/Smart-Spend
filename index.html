@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+  />
+  <meta name="theme-color" content="#050505" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <title>Smart Spend</title>
+  <link rel="stylesheet" href="style.css" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
+    rel="stylesheet"
+  />
+</head>
+<body>
+  <!-- SPLASH -->
+  <div id="splash-screen">
+    <div class="logo-container">
+      <div class="app-icon-pro">S</div>
+      <div class="logo-line"></div>
+      <h1 class="app-name-pro">SMART SPEND</h1>
+    </div>
+  </div>
+
+  <!-- CINEMATIC PHOTOS -->
+  <div id="meme-flow" class="hidden">
+    <div id="shock-moment" class="parallax-wrap">
+      <div class="content-frame cinematic-frame">
+        <div class="cinema-layers">
+          <div class="cinema-glow"></div>
+          <div class="cinema-noise"></div>
+
+          <div class="img-box-full depth-card tilt-card">
+            <img
+              src="https://drive.google.com/thumbnail?id=1XxNTsTlMAfIG_GKqnCwbuPgNaKJCPOOI&sz=w1000"
+              class="main-img ken-burns"
+              alt="Shock"
+            />
+          </div>
+        </div>
+
+        <div class="dialogue-area cinematic-dialogue"></div>
+      </div>
+    </div>
+
+    <div id="success-moment" class="parallax-wrap hidden">
+      <div class="content-frame cinematic-frame">
+        <div class="cinema-layers">
+          <div class="cinema-glow glow-success"></div>
+          <div class="cinema-noise"></div>
+
+          <div class="img-crop-box depth-card tilt-card">
+            <img
+              src="https://drive.google.com/thumbnail?id=1bAdqaN04NcfFoNV-06RLZrA15PSbNbAa&sz=w1000"
+              class="main-img dopamine-surge"
+              alt="Success"
+            />
+          </div>
+        </div>
+
+        <div class="dialogue-area">
+          <p class="meme-text">Nahi... Sachi?</p>
+          <h1 class="meme-text punchline">Main nahi manta</h1>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- APP SHELL -->
+  <div id="app-shell" class="hidden">
+    <main id="app-main">
+      <!-- HOME -->
+      <section class="screen" id="screen-home">
+        <section id="hero-intro">
+          <h1 class="hero-title">SMART SPEND</h1>
+          <p class="hero-tagline">
+            A real-time spending awareness system that rewires your money
+            behavior using psychology, habits, and identity — not restriction.
+          </p>
+          <div class="hero-pills">
+            <span>Awareness &gt; Restriction</span>
+            <span>No shame. No guilt.</span>
+            <span>Behavior-first finance</span>
+          </div>
+        </section>
+
+        <section id="system-grid">
+          <div class="sys-card">
+            <h2>System Objective</h2>
+            <ul>
+              <li>Detect spending moments.</li>
+              <li>Create real-time awareness.</li>
+              <li>Guide behavior with psychology.</li>
+              <li>Encourage long-term freedom.</li>
+            </ul>
+          </div>
+
+          <div class="sys-card">
+            <h2>Default Rule • 40•30•20•10</h2>
+            <p class="sys-note">
+              A starting point. Rules evolve with your behavior.
+            </p>
+            <ul>
+              <li>Essentials · 40%</li>
+              <li>Lifestyle · 30%</li>
+              <li>Investments · 20%</li>
+              <li>Savings · 10%</li>
+            </ul>
+          </div>
+
+          <div class="sys-card">
+            <h2>No Shame Engine</h2>
+            <p class="sys-note">Not a payment app. Not a bank.</p>
+            <ul>
+              <li>Does not process payments.</li>
+              <li>No bank credentials.</li>
+              <li>No data selling.</li>
+            </ul>
+          </div>
+
+          <div class="sys-card">
+            <h2>Payment Detection</h2>
+            <p class="sys-note">Spending moment = awareness trigger.</p>
+            <ul>
+              <li>Notification signals.</li>
+              <li>Timestamps.</li>
+              <li>Merchant metadata (when available).</li>
+            </ul>
+          </div>
+        </section>
+
+        <section id="home-mini">
+          <h3 class="mini-title">This Month’s Shape</h3>
+          <div class="mini-cards" id="homeMiniStats"></div>
+        </section>
+
+        <!-- TROPHY CTA CARD -->
+        <section id="home-trophy-cta">
+          <div class="trophy-cta-card" onclick="switchScreen('trophies')">
+            <div class="trophy-cta-left">
+              <div class="trophy-cta-label">Monthly ladder</div>
+              <div class="trophy-cta-title">Your Trophy Story</div>
+              <div class="trophy-cta-sub">
+                Lock each month like a Clash season. Climb up, dip down, reset fresh.
+              </div>
+            </div>
+            <div class="trophy-cta-right">
+              <div id="trophyLeagueBadgeHome" class="trophy-badge">Bronze</div>
+              <div class="trophy-cta-score">
+                <span id="trophyScoreHome">0</span>
+              </div>
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <!-- MONTHLY PLAN / RULE -->
+      <section class="screen hidden" id="screen-rule">
+        <section id="setup-section">
+          <div class="setup-card">
+            <h3>Is Mahine Kitna Kharcha?</h3>
+            <div class="setup-row">
+              <label for="monthlyGoal">Monthly spending goal (₹)</label>
+              <input
+                type="number"
+                id="monthlyGoal"
+                placeholder="e.g. 40000"
+                inputmode="numeric"
+              />
+            </div>
+
+            <div class="setup-row">
+              <label>Choose mode</label>
+              <div class="mode-pills" id="modePills">
+                <button
+                  class="mode-pill active"
+                  data-mode="balanced"
+                  type="button"
+                  onclick="selectMode('balanced')"
+                >
+                  Balanced
+                  <span class="mode-sub">40 • 30 • 20 • 10</span>
+                </button>
+                <button
+                  class="mode-pill"
+                  data-mode="student"
+                  type="button"
+                  onclick="selectMode('student')"
+                >
+                  Student
+                  <span class="mode-sub">More lifestyle, lighter future</span>
+                </button>
+                <button
+                  class="mode-pill"
+                  data-mode="wealth"
+                  type="button"
+                  onclick="selectMode('wealth')"
+                >
+                  Wealth Builder
+                  <span class="mode-sub">Heavy invest + savings</span>
+                </button>
+                <button
+                  class="mode-pill"
+                  data-mode="custom"
+                  type="button"
+                  onclick="selectMode('custom')"
+                >
+                  Custom
+                  <span class="mode-sub">You decide the mix</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="setup-row custom-block hidden" id="customRuleBlock">
+              <label>Custom rule (%)</label>
+              <div class="custom-grid">
+                <input
+                  type="number"
+                  id="ruleEss"
+                  placeholder="E"
+                  min="0"
+                  max="100"
+                />
+                <input
+                  type="number"
+                  id="ruleLife"
+                  placeholder="L"
+                  min="0"
+                  max="100"
+                />
+                <input
+                  type="number"
+                  id="ruleInv"
+                  placeholder="I"
+                  min="0"
+                  max="100"
+                />
+                <input
+                  type="number"
+                  id="ruleSav"
+                  placeholder="S"
+                  min="0"
+                  max="100"
+                />
+              </div>
+            </div>
+
+            <select id="modeSelect" class="hidden">
+              <option value="balanced" selected>Balanced</option>
+              <option value="student">Student</option>
+              <option value="wealth">Wealth</option>
+              <option value="custom">Custom</option>
+            </select>
+
+            <button class="btn-pro full" onclick="applySetup()">
+              LOCK THIS RULE
+            </button>
+            <p class="setup-note" id="setupNote">
+              Rule is a starting point. You can always evolve it later.
+            </p>
+          </div>
+
+          <div class="limits-card">
+            <h3>Active Rule Snapshot</h3>
+            <p id="ruleSummary" class="rule-summary-line">
+              No rule locked yet. Set a goal to see your month split.
+            </p>
+            <div class="limits-grid" id="limitsGrid"></div>
+
+            <button class="btn-pro full reset-btn" onclick="fullResetAllData()">
+              FULL RESET · START FRESH
+            </button>
+            <p class="setup-note">
+              Use this only if you want to wipe all months, trophies, and spends.
+            </p>
+          </div>
+        </section>
+      </section>
+
+      <!-- STATS -->
+      <section class="screen hidden" id="screen-stats">
+        <section id="live-section">
+          <div class="live-left">
+            <h3 class="console-title">Live Awareness</h3>
+            <p class="console-copy">
+              Track how your Essentials, Lifestyle, Investments, and Savings are
+              moving against your agreed rule.
+            </p>
+
+            <div class="bars-grid" id="barsGrid"></div>
+            <div class="alert-panel" id="alertPanel"></div>
+          </div>
+        </section>
+      </section>
+
+      <!-- ALERT LOG -->
+      <section class="screen hidden" id="screen-alerts">
+        <section id="alerts-log">
+          <h3 class="console-title">Alert Log</h3>
+          <p class="console-copy">
+            A gentle history of the moments your bars brushed their lines.
+          </p>
+          <div id="alertsHistory"></div>
+        </section>
+      </section>
+
+      <!-- ADD SPEND -->
+      <section class="screen hidden" id="screen-add">
+        <section id="add-screen">
+          <h3 class="console-title">Record a Spend</h3>
+          <p class="console-copy">
+            Log any spend here. Smart Spend just records the moment — nothing to
+            do with your bank.
+          </p>
+
+          <div class="add-card">
+            <label class="add-label" for="amt">Amount (₹)</label>
+            <input
+              type="number"
+              id="amt"
+              placeholder="e.g. 750"
+              inputmode="numeric"
+            />
+
+            <label class="add-label">Category</label>
+            <div class="chip-row">
+              <button
+                class="chip"
+                data-cat="essentials"
+                onclick="quickSelect('essentials')"
+              >
+                Essentials
+              </button>
+              <button
+                class="chip"
+                data-cat="lifestyle"
+                onclick="quickSelect('lifestyle')"
+              >
+                Lifestyle
+              </button>
+              <button
+                class="chip"
+                data-cat="invest"
+                onclick="quickSelect('invest')"
+              >
+                Investments
+              </button>
+              <button
+                class="chip"
+                data-cat="savings"
+                onclick="quickSelect('savings')"
+              >
+                Savings
+              </button>
+            </div>
+
+            <select id="cat" class="hidden">
+              <option value="essentials">Essentials</option>
+              <option value="lifestyle">Lifestyle</option>
+              <option value="invest">Investments</option>
+              <option value="savings">Savings</option>
+            </select>
+
+            <button class="btn-pro full" onclick="addSpend(true)">
+              SAVE THIS SPEND
+            </button>
+            <p class="setup-note">
+              One tap, one log. Close the app; awareness travels with you.
+            </p>
+          </div>
+
+          <div class="add-card">
+            <h3 class="console-title">This Month's Spends</h3>
+            <p class="console-copy">
+              Edit or delete any spend if you logged something by mistake.
+            </p>
+            <div id="spendsList"></div>
+          </div>
+        </section>
+      </section>
+
+      <!-- TROPHIES -->
+      <section class="screen hidden" id="screen-trophies">
+        <section id="trophies-section">
+          <div class="trophy-header-card">
+            <div class="trophy-header-main">
+              <div>
+                <div class="console-title">Monthly Trophies</div>
+                <p class="console-copy">
+                  Clash‑style ladder for your money story. Each month can move you up or down — gently.
+                </p>
+              </div>
+              <div class="trophy-score-shell">
+                <div id="trophyLeagueBadge" class="trophy-badge">Bronze</div>
+                <div class="trophy-score-row">
+                  <span class="trophy-score-label">Trophies</span>
+                  <span id="trophyScore" class="trophy-score-value">0</span>
+                </div>
+              </div>
+            </div>
+            <button class="btn-pro full" onclick="finalizeCurrentMonth()">
+              FINALIZE THIS MONTH
+            </button>
+            <p class="setup-note" id="trophyNote">
+              Lock this month’s story when you’re ready. You can’t edit spends after finalizing.
+            </p>
+          </div>
+
+          <div class="trophy-history-card">
+            <h3 class="mini-title">Month History</h3>
+            <div id="trophyHistoryList" class="trophy-list"></div>
+          </div>
+
+          <!-- TROPHY RULES EXPLAINER -->
+          <div class="trophy-rules-card">
+            <h3 class="mini-title">How Your Trophies Work</h3>
+            <p class="console-copy">
+              Each month you get a hidden score (0–100). That score turns into trophies and slowly moves your league.
+            </p>
+
+            <div class="trophy-rules-grid">
+              <div class="trophy-rules-block">
+                <div class="trophy-rules-title">Monthly score → Trophies</div>
+                <ul class="trophy-rules-list">
+                  <li>Score 75–100 · +18 trophies</li>
+                  <li>Score 55–74 · +10 trophies</li>
+                  <li>Score 35–54 · +3 trophies</li>
+                  <li>Score 25–34 · 0 trophies</li>
+                  <li>Score 0–24 · −8 trophies</li>
+                </ul>
+              </div>
+
+              <div class="trophy-rules-block">
+                <div class="trophy-rules-title">Leagues & thresholds</div>
+                <ul class="trophy-rules-list">
+                  <li>0–39 · Bronze</li>
+                  <li>40–89 · Silver</li>
+                  <li>90–149 · Gold</li>
+                  <li>150–219 · Crystal</li>
+                  <li>220–299 · Master</li>
+                  <li>300–399 · Champion</li>
+                  <li>400+ · Legend</li>
+                </ul>
+              </div>
+
+              <div class="trophy-rules-block">
+                <div class="trophy-rules-title">What moves your score</div>
+                <ul class="trophy-rules-list">
+                  <li>Goal usage: Inside or just over your goal helps.</li>
+                  <li>Future‑you: More into Investments + Savings = more points.</li>
+                  <li>Lifestyle: Very heavy Lifestyle can quietly pull score down.</li>
+                  <li>Streaks: 2+ good months in a row boost gains; 2+ heavy months soften losses.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <!-- END TROPHY RULES -->
+
+        </section>
+      </section>
+    </main>
+
+    <nav id="bottom-nav">
+      <button class="nav-item active" data-target="home" onclick="switchScreen('home')">
+        <span class="nav-icon">🏠</span>
+        <span class="nav-label">Home</span>
+      </button>
+      <button class="nav-item" data-target="stats" onclick="switchScreen('stats')">
+        <span class="nav-icon">📊</span>
+        <span class="nav-label">Stats</span>
+      </button>
+      <button class="nav-item nav-center" data-target="add" onclick="switchScreen('add')">
+        <span class="nav-icon">＋</span>
+      </button>
+      <button class="nav-item" data-target="rule" onclick="switchScreen('rule')">
+        <span class="nav-icon">⚙️</span>
+        <span class="nav-label">Monthly Plan</span>
+      </button>
+      <button class="nav-item" data-target="alerts" onclick="switchScreen('alerts')">
+        <span class="nav-icon">🔔</span>
+        <span class="nav-label">Alerts</span>
+      </button>
+    </nav>
+  </div>
+
+  <!-- CUSTOM MODAL -->
+  <div id="modalOverlay" class="modal-overlay hidden">
+    <div class="modal-card">
+      <div class="modal-title" id="modalTitle">Confirm</div>
+      <div class="modal-message" id="modalMessage"></div>
+      <div class="modal-actions">
+        <button class="modal-btn secondary" id="modalCancelBtn">Cancel</button>
+        <button class="modal-btn primary" id="modalConfirmBtn">OK</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- INPUT MODAL (for edit amount) -->
+  <div id="inputModalOverlay" class="modal-overlay hidden">
+    <div class="modal-card">
+      <div class="modal-title" id="inputModalTitle">Edit amount</div>
+      <div class="modal-message" id="inputModalMessage"></div>
+      <input
+        type="number"
+        id="inputModalField"
+        class="modal-input"
+        inputmode="decimal"
+      />
+      <div class="modal-actions">
+        <button class="modal-btn secondary" id="inputModalCancelBtn">Cancel</button>
+        <button class="modal-btn primary" id="inputModalConfirmBtn">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Confetti (once) + App script -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
