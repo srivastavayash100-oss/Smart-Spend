@@ -1338,21 +1338,52 @@ async function fullResetAllData() {
 
 /* SERVICE WORKER + PWA BANNER */
 
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/Smart-Spend/sw.js')
-      .then(reg => console.log('SW Registered!'))
-      .catch(err => console.log('SW Registration Failed: ', err));
-  });
-}
-
+/* 🔥 AUTO UPDATE TOAST + PWA INSTALL */
+let newWorker;
 let deferredPrompt;
 const installBanner = document.getElementById('pwa-install-banner');
 
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/sw.js', { updateViaCache: 'none' })
+    .then(reg => {
+      console.log('SW Auto-Update Ready');
+      
+      reg.addEventListener('updatefound', () => {
+        newWorker = reg.installing;
+        newWorker.addEventListener('statechange', () => {
+          if (newWorker.state === 'installed') {
+            showUpdateToast();
+          }
+        });
+      });
+      
+      // Check updates every 3 min
+      setInterval(() => reg.update(), 3 * 60 * 1000);
+    });
+
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    location.reload();
+  });
+}
+
+function showUpdateToast() {
+  const toast = document.createElement('div');
+  toast.style.cssText = `
+    position:fixed;top:20px;left:50%;transform:translateX(-50%);
+    background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);
+    color:white;padding:15px 25px;border-radius:25px;
+    box-shadow:0 20px 40px rgba(0,0,0,0.3);z-index:10000;
+    font-weight:600;font-size:16px;
+  `;
+  toast.innerHTML = `🎉 New version ready! <button onclick="location.reload()" style="background:#FFD700;color:#333;border:none;padding:8px 16px;border-radius:20px;margin-left:15px;font-weight:600;cursor:pointer;font-size:14px;">Update Now</button>`;
+  document.body.appendChild(toast);
+  setTimeout(() => toast.remove(), 10000);
+}
+
+// PWA INSTALL BANNER (unchanged)
 window.addEventListener('beforeinstallprompt', (e) => {
   e.preventDefault();
   deferredPrompt = e;
-  
   setTimeout(() => {
     installBanner.classList.add('show');
     installBanner.classList.remove('hidden');
