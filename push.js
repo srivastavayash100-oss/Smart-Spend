@@ -1,10 +1,7 @@
-// 1) Firebase messaging object banao
 const messaging = firebase.messaging();
 
-// 2) Service worker register karo (GitHub Pages path ke saath)
 navigator.serviceWorker.register('/Smart-Spend/firebase-messaging-sw.js');
 
-// 3) Tumhara existing enablePush function
 async function enablePush() {
   if (!('Notification' in window)) {
     alert('Notifications not supported on this device/browser.');
@@ -20,7 +17,6 @@ async function enablePush() {
     });
 
     console.log('FCM TOKEN:', token);
-    // TODO: is token ko apne backend / DB ko bhejna hai
   } catch (err) {
     console.error('Error getting FCM token', err);
   }
