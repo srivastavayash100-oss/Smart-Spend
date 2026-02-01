@@ -4,12 +4,12 @@ const CACHE_NAME = 'smart-spend-v1';
 
 // GitHub Pages ke liye paths ko explicit rakhna better hota hai
 const ASSETS_TO_CACHE = [
-  './',
-  './index.html',
-  './style.css',
-  './script.js',
-  './manifest.json',
-  './icon.png'
+  '/Smart-Spend/', 
+  '/Smart-Spend/index.html',
+  '/Smart-Spend/style.css',
+  '/Smart-Spend/script.js',
+  '/Smart-Spend/manifest.json',
+  '/Smart-Spend/icon.png'
 ];
 
 // 1. INSTALL: Assets ko cache mein save karna
