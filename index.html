@@ -9,42 +9,41 @@
 <link rel="icon" type="image/png" href="icon.png">
 <link rel="apple-touch-icon" href="icon.png">
 
- <link rel="manifest" href="manifest.json">
+<link rel="manifest" href="manifest.json">
   
-  <meta charset="UTF-8" />
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
-  />
-  <meta name="theme-color" content="#050505" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <title>Smart Spend</title>
-  <link rel="stylesheet" href="style.css" />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
-    rel="stylesheet"
-  />
+<meta charset="UTF-8" />
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+/>
+<meta name="theme-color" content="#050505" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<title>Smart Spend</title>
+<link rel="stylesheet" href="style.css" />
+<link
+  href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
+  rel="stylesheet"
+/>
 </head>
 <body>
 
   <!---Download--->
-<div id="pwa-install-banner" class="install-banner hidden">
-  <div class="banner-content">
-    <img src="icon.png" alt="App Icon" class="banner-icon">
-    <div class="banner-text">
-      <p class="banner-title">Smart Spend App</p>
-      <p class="banner-sub">Install for offline access & better experience</p>
+  <div id="pwa-install-banner" class="install-banner hidden">
+    <div class="banner-content">
+      <img src="icon.png" alt="App Icon" class="banner-icon">
+      <div class="banner-text">
+        <p class="banner-title">Smart Spend App</p>
+        <p class="banner-sub">Install for offline access & better experience</p>
+      </div>
+    </div>
+    <div class="banner-actions">
+      <button id="btn-install-now" class="btn-install">INSTALL</button>
+      <button id="btn-close-banner" class="btn-close">✕</button>
     </div>
   </div>
-  <div class="banner-actions">
-    <button id="btn-install-now" class="btn-install">INSTALL</button>
-    <button id="btn-close-banner" class="btn-close">✕</button>
-  </div>
-</div>
   
   <!-- SPLASH -->
-  
   <div id="splash-screen">
     <div class="logo-container">
       <div class="app-icon-pro">S</div>
@@ -100,6 +99,7 @@
   <!-- APP SHELL -->
   <div id="app-shell" class="hidden">
     <main id="app-main">
+
       <!-- HOME -->
       <section class="screen" id="screen-home">
         <section id="hero-intro">
@@ -112,6 +112,43 @@
             <span>Awareness &gt; Restriction</span>
             <span>No shame. No guilt.</span>
             <span>Behavior-first finance</span>
+          </div>
+        </section>
+
+        <!-- NEW HOME HERO DASHBOARD -->
+        <section id="home-hero">
+          <div class="home-hero-card">
+            <div class="home-hero-row">
+              <div class="home-hero-main">
+                <div class="home-hero-pill">This month’s story</div>
+                <div class="home-hero-highlight" id="homeHeroHeadline">Clean slate</div>
+                <div id="homeHeroSub" class="home-hero-sub">
+                  Set a goal to start your money season.
+                </div>
+              </div>
+              <div class="home-hero-right">
+                <div class="home-hero-right-label">League</div>
+                <div id="homeHeroLeague" class="home-hero-right-league">Bronze</div>
+                <div class="home-hero-right-trophies">
+                  Trophies: <span id="homeHeroTrophies">0</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="home-metrics-grid">
+              <div class="home-metric-card">
+                <div class="home-metric-label">Goal used</div>
+                <div class="home-metric-value" id="homeMetricGoal">0%</div>
+              </div>
+              <div class="home-metric-card">
+                <div class="home-metric-label">Lifestyle load</div>
+                <div class="home-metric-value" id="homeMetricLifestyle">0%</div>
+              </div>
+              <div class="home-metric-card">
+                <div class="home-metric-label">Future‑you share</div>
+                <div class="home-metric-value" id="homeMetricFuture">0%</div>
+              </div>
+            </div>
           </div>
         </section>
 
@@ -311,15 +348,27 @@
       <!-- STATS -->
       <section class="screen hidden" id="screen-stats">
         <section id="live-section">
-          <div class="live-left">
-            <h3 class="console-title">Live Awareness</h3>
-            <p class="console-copy">
-              Track how your Essentials, Lifestyle, Investments, and Savings are
-              moving against your agreed rule.
-            </p>
+          <div class="stats-layout">
+            <div class="stats-hero-card">
+              <div class="stats-hero-ring">
+                <div class="stats-hero-inner">
+                  <div class="stats-hero-label">Goal used</div>
+                  <div id="statsHeroValue" class="stats-hero-value">0%</div>
+                  <div id="statsHeroTag" class="stats-hero-tag">Month just started</div>
+                </div>
+              </div>
+            </div>
 
-            <div class="bars-grid" id="barsGrid"></div>
-            <div class="alert-panel" id="alertPanel"></div>
+            <div class="stats-side-card">
+              <h3 class="console-title">Live Awareness</h3>
+              <p class="console-copy">
+                Track how your Essentials, Lifestyle, Investments, and Savings are
+                moving against your agreed rule.
+              </p>
+
+              <div class="bars-grid" id="barsGrid"></div>
+              <div class="alert-panel" id="alertPanel"></div>
+            </div>
           </div>
         </section>
       </section>
@@ -338,74 +387,77 @@
       <!-- ADD SPEND -->
       <section class="screen hidden" id="screen-add">
         <section id="add-screen">
-          <h3 class="console-title">Record a Spend</h3>
-          <p class="console-copy">
-            Log any spend here. Smart Spend just records the moment — nothing to
-            do with your bank.
-          </p>
+          <div class="add-grid-shell">
+            <div class="add-primary-card">
+              <h3 class="console-title">Record a Spend</h3>
+              <p class="console-copy">
+                Log any spend here. Smart Spend just records the moment — nothing to
+                do with your bank.
+              </p>
 
-          <div class="add-card">
-            <label class="add-label" for="amt">Amount (₹)</label>
-            <input
-              type="number"
-              id="amt"
-              placeholder="e.g. 750"
-              inputmode="numeric"
-            />
+              <label class="add-label" for="amt">Amount (₹)</label>
+              <input
+                type="number"
+                id="amt"
+                class="add-amount-input"
+                placeholder="Tap to type, e.g. 750"
+                inputmode="numeric"
+              />
 
-            <label class="add-label">Category</label>
-            <div class="chip-row">
-              <button
-                class="chip"
-                data-cat="essentials"
-                onclick="quickSelect('essentials')"
-              >
-                Essentials
+              <div class="add-chip-label">Category</div>
+              <div class="chip-row">
+                <button
+                  class="chip"
+                  data-cat="essentials"
+                  onclick="quickSelect('essentials')"
+                >
+                  Essentials
+                </button>
+                <button
+                  class="chip"
+                  data-cat="lifestyle"
+                  onclick="quickSelect('lifestyle')"
+                >
+                  Lifestyle
+                </button>
+                <button
+                  class="chip"
+                  data-cat="invest"
+                  onclick="quickSelect('invest')"
+                >
+                  Investments
+                </button>
+                <button
+                  class="chip"
+                  data-cat="savings"
+                  onclick="quickSelect('savings')"
+                >
+                  Savings
+                </button>
+              </div>
+
+              <select id="cat" class="hidden">
+                <option value="essentials">Essentials</option>
+                <option value="lifestyle">Lifestyle</option>
+                <option value="invest">Investments</option>
+                <option value="savings">Savings</option>
+              </select>
+
+              <button class="btn-pro full" onclick="addSpend(true)">
+                SAVE THIS SPEND
               </button>
-              <button
-                class="chip"
-                data-cat="lifestyle"
-                onclick="quickSelect('lifestyle')"
-              >
-                Lifestyle
-              </button>
-              <button
-                class="chip"
-                data-cat="invest"
-                onclick="quickSelect('invest')"
-              >
-                Investments
-              </button>
-              <button
-                class="chip"
-                data-cat="savings"
-                onclick="quickSelect('savings')"
-              >
-                Savings
-              </button>
+              <p class="setup-note">
+                One tap, one log. Close the app; awareness travels with you.
+              </p>
             </div>
 
-            <select id="cat" class="hidden">
-              <option value="essentials">Essentials</option>
-              <option value="lifestyle">Lifestyle</option>
-              <option value="invest">Investments</option>
-              <option value="savings">Savings</option>
-            </select>
-
-            <button class="btn-pro full" onclick="addSpend(true)">
-              SAVE THIS SPEND
-            </button>
-            <p class="setup-note">
-              One tap, one log. Close the app; awareness travels with you.
-            </p>
-          </div>
-
-          <div class="add-card">
-            <h3 class="console-title">This Month's Spends</h3>
-            <p class="console-copy">
-              Edit or delete any spend if you logged something by mistake.
-            </p>
-            <div id="spendsList"></div>
+            <div class="add-secondary-card">
+              <h3 class="console-title">This Month's Spends</h3>
+              <p class="console-copy">
+                Edit or delete any spend if you logged something by mistake.
+              </p>
+              <div id="spendsList"></div>
+            </div>
           </div>
         </section>
       </section>
