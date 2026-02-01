@@ -1,35 +1,20 @@
-function urlBase64ToUint8Array(base64String) {
-  const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
-  const base64 = (base64String + padding)
-    .replace(/-/g, '+')
-    .replace(/_/g, '/');
-
-  const rawData = atob(base64);
-  const outputArray = new Uint8Array(rawData.length);
-
-  for (let i = 0; i < rawData.length; ++i) {
-    outputArray[i] = rawData.charCodeAt(i);
-  }
-  return outputArray;
-}
-
 async function enablePush() {
-  if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
-    alert('Push not supported on this device/browser yet.');
+  if (!('Notification' in window)) {
+    alert('Notifications not supported on this device/browser.');
     return;
   }
 
   const permission = await Notification.requestPermission();
   if (permission !== 'granted') return;
 
-  const reg = await navigator.serviceWorker.ready;
+  try {
+    const token = await messaging.getToken({
+      vapidKey: 'BEz-RQJ9Krggi13aFiu2veQEuqNvDbkKn7CrJgPN6MBPJib2oU2jOW8Z6x28dSoegUe0GrOJmkj-UpcB9POtpvU'
+    });
 
-  const sub = await reg.pushManager.subscribe({
-    userVisibleOnly: true,
-    applicationServerKey: urlBase64ToUint8Array(
-      'BEz-RQJ9Krggi13aFiu2veQEuqNvDbkKn7CrJgPN6MBPJib2oU2jOW8Z6x28dSoegUe0GrOJmkj-UpcB9POtpvU'
-    )
-  });
-
-  console.log('PUSH SUBSCRIPTION:', JSON.stringify(sub));
+    console.log('FCM TOKEN:', token);
+    // TODO: is token ko apne backend / DB ko bhejna hai
+  } catch (err) {
+    console.error('Error getting FCM token', err);
+  }
 }
