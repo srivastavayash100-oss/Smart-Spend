@@ -1152,3 +1152,31 @@ if ('serviceWorker' in navigator) {
       .catch(err => console.log('SW Registration Failed: ', err));
   });
 }
+let deferredPrompt;
+const installBanner = document.getElementById('pwa-install-banner');
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  
+  // 3 second baad banner dikhao
+  setTimeout(() => {
+    installBanner.classList.add('show');
+    installBanner.classList.remove('hidden');
+  }, 3000);
+});
+
+document.getElementById('btn-install-now').addEventListener('click', async () => {
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    if (outcome === 'accepted') {
+      installBanner.classList.remove('show');
+    }
+    deferredPrompt = null;
+  }
+});
+
+document.getElementById('btn-close-banner').addEventListener('click', () => {
+  installBanner.classList.remove('show');
+});
