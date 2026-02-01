@@ -15,14 +15,17 @@ let trophies = 0;
 let history = [];
 
 /* MODAL STATE */
-
 let confirmResolve = null;
 let inputResolve = null;
+
+/* NAV STATE FOR TRANSITIONS */
+let currentScreenId = "screen-home";
 
 /* BOOT */
 
 window.onload = () => {
   loadAll();
+  checkMonthlyReset();
   const nowId = getCurrentMonthId();
 
   if (!state.currentMonthId) {
@@ -54,6 +57,16 @@ window.onload = () => {
   renderSpendsList();
 
   selectMode(state.activeMode || "balanced");
+
+  // Ensure initial screen has active class
+  const homeScreen = document.getElementById("screen-home");
+  if (homeScreen) {
+    homeScreen.classList.add("screen-active");
+    
+    if (Notification.permission === 'default') {
+    Notification.requestPermission();
+  }
+  }
 };
 
 function getCurrentMonthId() {
@@ -257,6 +270,39 @@ function autoFinalizeIfNeeded() {
   }
 }
 
+// 🔥 AUTO MONTHLY RESET ON 1st TAREEKH
+function checkMonthlyReset() {
+  const now = new Date();
+  const today = now.getDate();
+  const currentHour = now.getHours();
+  
+  // 1st tareekh 6-10 AM ke beech chalega
+  if (today === 1 && currentHour >= 6 && currentHour < 10) {
+    
+    const nowId = getCurrentMonthId();
+    const prevId = addMonths(nowId, -1);
+    
+    // Previous month pending hai to finalize
+    if (state.currentMonthId === prevId && 
+        (state.spent.essentials + state.spent.lifestyle + state.spent.invest + state.spent.savings) > 0) {
+      
+      finalizeCurrentMonth(true);
+      
+      // Notification (permission check karke)
+      if (Notification.permission === 'granted') {
+        new Notification('Smart Spend', {
+         body: `📅 New month started! Set this month's ₹ goal.`,
+          icon: 'icon.png'
+        });
+      }
+      
+      // 2 sec me fresh reload
+      setTimeout(() => location.reload(), 2000);
+    }
+  }
+}
+
+
 /* CINEMATIC */
 
 function playCinematicSequence() {
@@ -297,7 +343,7 @@ function playCinematicSequence() {
   }, 4500);
 }
 
-/* NAVIGATION */
+/* NAVIGATION WITH TRANSITIONS */
 
 function switchScreen(target) {
   const mapping = {
@@ -309,9 +355,30 @@ function switchScreen(target) {
     trophies: "screen-trophies"
   };
 
-  document.querySelectorAll(".screen").forEach(s => s.classList.add("hidden"));
-  const id = mapping[target];
-  if (id) document.getElementById(id).classList.remove("hidden");
+  const nextId = mapping[target];
+  if (!nextId) return;
+
+  const currentEl = currentScreenId
+    ? document.getElementById(currentScreenId)
+    : null;
+  const nextEl = document.getElementById(nextId);
+  if (!nextEl) return;
+
+  if (currentEl && currentEl !== nextEl) {
+    currentEl.classList.remove("screen-active");
+    currentEl.classList.add("screen-leave");
+    setTimeout(() => {
+      currentEl.classList.add("hidden");
+      currentEl.classList.remove("screen-leave");
+    }, 260);
+  }
+
+  nextEl.classList.remove("hidden");
+  requestAnimationFrame(() => {
+    nextEl.classList.add("screen-active");
+  });
+
+  currentScreenId = nextId;
 
   document.querySelectorAll("#bottom-nav .nav-item").forEach(btn => {
     btn.classList.remove("active");
@@ -387,13 +454,6 @@ function applySetup() {
     state.limits[cat] = (state.monthlyGoal * state.rule[cat]) / 100;
   }
 
-  // OPTIONAL: goal lock karte hi current month ke spends reset karne hain?
-  // Agar haan, to niche ka block uncomment kar de:
-  /*
-  state.spent = { essentials: 0, lifestyle: 0, invest: 0, savings: 0 };
-  state.spends = [];
-  */
-
   note.textContent =
     "Rule locked for this month. Your bars will now move against this line.";
   renderLimits();
@@ -439,7 +499,7 @@ function renderLimits() {
   }
 }
 
-/* HOME MINI */
+/* HOME MINI + HERO DASHBOARD */
 
 function renderHomeMini() {
   const mini = document.getElementById("homeMiniStats");
@@ -470,6 +530,57 @@ function renderHomeMini() {
     <strong>${pct}%</strong>
   `;
   mini.appendChild(card2);
+
+  // NEW: home hero update
+  const heroHeadline = document.getElementById("homeHeroHeadline");
+  const heroSub = document.getElementById("homeHeroSub");
+  const heroLeague = document.getElementById("homeHeroLeague");
+  const heroTrophies = document.getElementById("homeHeroTrophies");
+
+  const metricGoal = document.getElementById("homeMetricGoal");
+  const metricLifestyle = document.getElementById("homeMetricLifestyle");
+  const metricFuture = document.getElementById("homeMetricFuture");
+
+  if (heroLeague && heroTrophies) {
+    const league = getLeague(trophies);
+    heroLeague.textContent = league;
+    heroTrophies.textContent = trophies.toString();
+  }
+
+  if (metricGoal) {
+    const gPct = goal > 0 ? Math.round((totalSpent / goal) * 100) : 0;
+    metricGoal.textContent = `${gPct}%`;
+  }
+
+  const lifeLimit = state.limits.lifestyle || 0;
+  const life = state.spent.lifestyle;
+  if (metricLifestyle) {
+    const lpct = lifeLimit > 0 ? Math.round((life / lifeLimit) * 100) : 0;
+    metricLifestyle.textContent = lifeLimit ? `${lpct}%` : "—";
+  }
+
+  const futureLimit = (state.limits.invest || 0) + (state.limits.savings || 0);
+  const futureSpent = state.spent.invest + state.spent.savings;
+  if (metricFuture) {
+    const fpct = futureLimit > 0 ? Math.round((futureSpent / futureLimit) * 100) : 0;
+    metricFuture.textContent = futureLimit ? `${fpct}%` : "—";
+  }
+
+  if (heroHeadline && heroSub) {
+    if (!goal) {
+      heroHeadline.textContent = "Clean slate month";
+      heroSub.textContent = "Lock a goal and rule to start your story.";
+    } else if (totalSpent === 0) {
+      heroHeadline.textContent = "Zero‑spend so far";
+      heroSub.textContent = "First swipe of the month decides the tone.";
+    } else if (totalSpent <= goal) {
+      heroHeadline.textContent = "You’re inside your goal";
+      heroSub.textContent = "Now the game is how much you gift to future‑you.";
+    } else {
+      heroHeadline.textContent = "Goal crossed";
+      heroSub.textContent = "No guilt — just info for next season’s rule.";
+    }
+  }
 }
 
 /* STATS & ALERTS */
@@ -528,13 +639,14 @@ function renderBarsAndAlerts() {
           alerts.push({
             class: "alert-soft",
             text:
-              "Essentials shield is fully used this month. Good info to carry into next cycle."
+             "Your Essentials budget is fully used for this month. Treat this as a clear signal for planning the next cycle."
           });
         } else if (percentUsed >= 80) {
           alerts.push({
             class: "alert-soft",
             text:
-              "Soft nudge: Essentials is brushing close to its line. Just stay conscious, not guilty."
+              "Essentials spending is getting close to its limit. Stay aware and adjust if needed."
+
           });
         }
       } else if (cat === "lifestyle") {
@@ -542,14 +654,16 @@ function renderBarsAndAlerts() {
           alerts.push({
             class: "alert-strong",
             text:
-              "Lifestyle just crossed its agreed line. No shame — just notice what story you're writing this month."
+              "Lifestyle spending has crossed the planned limit. Notice the pattern this month."
+
           });
           row.classList.add("shake-x");
         } else if (percentUsed >= 70) {
           alerts.push({
             class: "alert-warn",
             text:
-              "Awareness ping: Lifestyle is getting heavy. If this still feels worth it, own it. If not, maybe slow a little."
+             "Lifestyle spending is getting heavy. If it still feels right, own it; if not, consider slowing down."
+
           });
           row.classList.add("shake-x");
         }
@@ -558,14 +672,14 @@ function renderBarsAndAlerts() {
           alerts.push({
             class: "alert-soft",
             text:
-              "Future-you got a small deposit today. Even tiny steps compound over seasons."
+              "You added a small amount to future you today. Even small steps compound over time."
+
           });
         } else if (percentUsed >= 100) {
           alerts.push({
             class: "alert-soft",
-            text: `You maxed your ${
-              cat === "invest" ? "Investment" : "Savings"
-            } line. That’s a serious wealth-builder move.`
+            text: `You fully used your ${cat === "invest" ? "Investment" : "Savings"} allocation this month. That is a strong long‑term move.`
+
           });
         }
       }
@@ -588,6 +702,34 @@ function renderBarsAndAlerts() {
   });
 
   renderAlertsHistory();
+
+  // NEW: stats hero update
+  const totalSpent =
+    state.spent.essentials +
+    state.spent.lifestyle +
+    state.spent.invest +
+    state.spent.savings;
+  const goal = state.monthlyGoal || 0;
+  const heroValueEl = document.getElementById("statsHeroValue");
+  const heroTagEl = document.getElementById("statsHeroTag");
+
+  if (heroValueEl && heroTagEl) {
+    let pct = goal > 0 ? Math.round((totalSpent / goal) * 100) : 0;
+    if (pct > 999) pct = 999;
+    heroValueEl.textContent = `${pct}%`;
+
+    if (!goal) {
+      heroTagEl.textContent = "Set a monthly goal to light this up.";
+    } else if (pct === 0) {
+      heroTagEl.textContent = "Month just started. Clean slate.";
+    } else if (pct < 60) {
+      heroTagEl.textContent = "Plenty of room left in this month.";
+    } else if (pct < 100) {
+      heroTagEl.textContent = "You’re in the awareness zone now.";
+    } else {
+      heroTagEl.textContent = "Goal crossed. Notice the story, not the shame.";
+    }
+  }
 }
 
 /* ALERT LOG */
@@ -624,7 +766,8 @@ function quickSelect(cat) {
 }
 
 function addSpend(fromAddScreen = false) {
-  const val = parseFloat(document.getElementById("amt").value);
+  const amtInput = document.getElementById("amt");
+  const val = parseFloat(amtInput.value);
   const sel = document.getElementById("cat");
   const cat = sel.value;
 
@@ -640,7 +783,15 @@ function addSpend(fromAddScreen = false) {
   };
   state.spends.push(spendEntry);
 
-  document.getElementById("amt").value = "";
+  // dopamine pulse on label
+  const label = document.querySelector('label[for="amt"]');
+  if (label) {
+    label.classList.remove("add-pulse");
+    void label.offsetWidth;
+    label.classList.add("add-pulse");
+  }
+
+  amtInput.value = "";
   document.querySelectorAll(".chip").forEach(ch =>
     ch.classList.remove("active")
   );
@@ -663,7 +814,45 @@ function addSpend(fromAddScreen = false) {
   renderHomeMini();
   appendSingleSpendRow(spendEntry);
   saveAll();
+  
+ const limit = state.limits[cat];
+  if (limit > 0) {
+    const percentUsed = (state.spent[cat] / limit) * 100;
+    
+    // 80% WARNING (Essentials + Lifestyle only)
+    if (percentUsed >= 80 && (cat === 'essentials' || cat === 'lifestyle') && Notification.permission === 'granted') {
+      new Notification('Smart Spend', {
+        body: `💡 ${cat.toUpperCase()} ${Math.round(percentUsed)}% - Getting close...`,
+        icon: 'icon.png'
+      });
+    }
+    
+    // 100% CROSSED (Essentials + Lifestyle only)  
+    if (percentUsed >= 100 && (cat === 'essentials' || cat === 'lifestyle') && Notification.permission === 'granted') {
+      new Notification('Smart Spend', {
+        body: `⚠️ ${cat.toUpperCase()} 100% - Limit crossed. No shame, just notice.`,
+        icon: 'icon.png'
+      });
+    }
+    
+    // INVESTMENT FULL
+    if (cat === 'invest' && percentUsed >= 100 && Notification.permission === 'granted') {
+      new Notification('Smart Spend', {
+        body: '🎉 INVESTMENTS 100% - Serious wealth move! 💰',
+        icon: 'icon.png'
+      });
+    }
+    
+    // SAVINGS FULL
+    if (cat === 'savings' && percentUsed >= 100 && Notification.permission === 'granted') {
+      new Notification('Smart Spend', {
+        body: '🏆 SAVINGS 100% - Future-you is rich today! ✨',
+        icon: 'icon.png'
+      });
+    }
+  }
 }
+
 
 /* TROPHIES ENGINE: SCORE */
 
@@ -1065,7 +1254,8 @@ async function editSpend(id, rowNode) {
 
   const newAmtStr = await openInput({
     title: "Edit spend",
-    message: `Update amount for ${entry.category.toUpperCase()}:`,
+    message: `Update amount for ${entry.category.toUpperCase()}`,
+
     defaultValue: entry.amount
   });
   if (newAmtStr === null) return;
@@ -1145,6 +1335,9 @@ async function fullResetAllData() {
   renderSpendsList();
   saveAll();
 }
+
+/* SERVICE WORKER + PWA BANNER */
+
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('/Smart-Spend/sw.js')
@@ -1152,6 +1345,7 @@ if ('serviceWorker' in navigator) {
       .catch(err => console.log('SW Registration Failed: ', err));
   });
 }
+
 let deferredPrompt;
 const installBanner = document.getElementById('pwa-install-banner');
 
@@ -1159,7 +1353,6 @@ window.addEventListener('beforeinstallprompt', (e) => {
   e.preventDefault();
   deferredPrompt = e;
   
-  // 3 second baad banner dikhao
   setTimeout(() => {
     installBanner.classList.add('show');
     installBanner.classList.remove('hidden');
