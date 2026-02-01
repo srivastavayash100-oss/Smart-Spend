@@ -1,6 +1,9 @@
 /* --- SMART SPEND: PROFESSIONAL SERVICE WORKER ENGINE --- */
 
-const CACHE_NAME = 'smart-spend-2026-02-01-v1';
+// Har deploy me alag:
+const CACHE_NAME = 'smart-spend-' + new Date().getTime(); 
+
+
 
 
 // Relative paths use kar rahe hain taaki GitHub Pages ke sub-folders mein issue na aaye
