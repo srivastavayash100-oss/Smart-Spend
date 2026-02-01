@@ -1,27 +1,24 @@
 {
   "short_name": "SmartSpend",
-  "name": "Smart Spend: Behavioral HUD",
+  "name": "Smart Spend: Behavioral Finance HUD",
+  "description": "A real-time spending awareness system designed to rewire money behavior using psychology and gamification.",
   "icons": [
     {
-      "src": "https://raw.githubusercontent.com/srivastavayash100-oss/Smart-Spend/main/icon.png",
+      "src": "icon.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ],
-  "start_url": ".",
+  "start_url": "./index.html",
   "display": "standalone",
+  "orientation": "portrait",
   "theme_color": "#050505",
   "background_color": "#050505"
 }
-"icons": [
-  {
-    "src": "icon.png",
-    "sizes": "192x192",
-    "type": "image/png"
-  },
-  {
-    "src": "icon.png",
-    "sizes": "512x512",
-    "type": "image/png"
-  }
-]
