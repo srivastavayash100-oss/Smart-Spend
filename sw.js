@@ -1,15 +1,15 @@
-/* --- SMART SPEND: SERVICE WORKER ENGINE --- */
+/* --- SMART SPEND: PROFESSIONAL SERVICE WORKER ENGINE --- */
 
 const CACHE_NAME = 'smart-spend-v1';
 
-// GitHub Pages ke liye paths ko explicit rakhna better hota hai
+// Relative paths use kar rahe hain taaki GitHub Pages ke sub-folders mein issue na aaye
 const ASSETS_TO_CACHE = [
-  '/Smart-Spend/', 
-  '/Smart-Spend/index.html',
-  '/Smart-Spend/style.css',
-  '/Smart-Spend/script.js',
-  '/Smart-Spend/manifest.json',
-  '/Smart-Spend/icon.png'
+  './',
+  './index.html',
+  './style.css',
+  './script.js',
+  './manifest.json',
+  './icon.png'
 ];
 
 // 1. INSTALL: Assets ko cache mein save karna
@@ -41,12 +41,12 @@ self.addEventListener('activate', (event) => {
   return self.clients.claim();
 });
 
-// 3. FETCH: Network-First Strategy (Isse updates turant dikhenge)
+// 3. FETCH: Network-First Strategy (Online updates + Offline backup)
 self.addEventListener('fetch', (event) => {
   event.respondWith(
     fetch(event.request)
       .then((response) => {
-        // Agar network mil raha hai, toh cache update karo aur response bhejo
+        // Agar network hai, toh response return karo aur cache update karo
         const resClone = response.clone();
         caches.open(CACHE_NAME).then((cache) => {
           cache.put(event.request, resClone);
@@ -54,8 +54,14 @@ self.addEventListener('fetch', (event) => {
         return response;
       })
       .catch(() => {
-        // Agar internet nahi hai, toh cache se uthao
-        return caches.match(event.request);
+        // Agar internet nahi hai, toh cache se file uthao
+        return caches.match(event.request).then((cachedResponse) => {
+          if (cachedResponse) {
+            return cachedResponse;
+          }
+          // Agar file cache mein bhi nahi hai (rare case)
+          return new Response("Offline content not available");
+        });
       })
   );
 });
