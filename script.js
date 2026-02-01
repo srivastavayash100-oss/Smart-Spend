@@ -1344,7 +1344,7 @@ let deferredPrompt;
 const installBanner = document.getElementById('pwa-install-banner');
 
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/sw.js', { updateViaCache: 'none' })
+  navigator.serviceWorker.register('/Smart-Spend/sw.js', { updateViaCache: 'none' })
     .then(reg => {
       console.log('SW Auto-Update Ready');
       
