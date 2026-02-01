@@ -1,6 +1,6 @@
 /* --- SMART SPEND: PROFESSIONAL SERVICE WORKER ENGINE --- */
 
-const CACHE_NAME = 'smart-spend-v2';
+const CACHE_NAME = 'smart-spend-v3';
 
 // Relative paths use kar rahe hain taaki GitHub Pages ke sub-folders mein issue na aaye
 const ASSETS_TO_CACHE = [
