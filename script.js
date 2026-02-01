@@ -1147,8 +1147,8 @@ async function fullResetAllData() {
 }
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('sw.js')
+    navigator.serviceWorker.register('/Smart-Spend/sw.js')
       .then(reg => console.log('SW Registered!'))
       .catch(err => console.log('SW Registration Failed: ', err));
   });
-} 
+}
