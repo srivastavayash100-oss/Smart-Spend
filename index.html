@@ -101,127 +101,63 @@
     <main id="app-main">
 
       <!-- HOME -->
-      <section class="screen" id="screen-home">
-        <section id="hero-intro">
-          <h1 class="hero-title">SMART SPEND</h1>
-          <p class="hero-tagline">
-            A real-time spending awareness system that rewires your money
-            behavior using psychology, habits, and identity - not restriction.
-          </p>
-          <div class="hero-pills">
-            <span>Awareness &gt; Restriction</span>
-            <span>No shame. No guilt.</span>
-            <span>Behavior-first finance</span>
-          </div>
+     <section class="screen" id="screen-home">
+        <section id="hero-intro" style="margin-bottom: 24px;">
+          <h1 class="hero-title" style="font-size: 26px; font-weight: 800; letter-spacing: 8px; background: linear-gradient(135deg, #fff 0%, var(--gold-leaf) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">SMART SPEND</h1>
+          <p class="hero-tagline" style="color: #6b7280; font-size: 11px; text-transform: uppercase; letter-spacing: 2px; margin-top: 4px;">Awareness Shell • Private Tracker</p>
         </section>
 
-        <!-- NEW HOME HERO DASHBOARD -->
-        <section id="home-hero">
-          <div class="home-hero-card">
-            <div class="home-hero-row">
-              <div class="home-hero-main">
-                <div class="home-hero-pill">This month’s story</div>
-                <div class="home-hero-highlight" id="homeHeroHeadline">Clean slate</div>
-                <div id="homeHeroSub" class="home-hero-sub">
-                  Set a goal to start your money season.
-                </div>
+        <section id="home-hero" style="margin-bottom: 20px;">
+          <div class="home-hero-card" style="background: radial-gradient(circle at 0% 0%, rgba(255,255,255,0.02) 0%, rgba(5,5,5,1) 100%); border: 1px solid rgba(255,255,255,0.06); border-radius: 20px; padding: 22px; box-shadow: 0 30px 60px rgba(0,0,0,0.85);">
+            <div class="home-hero-row" style="display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 20px;">
+              <div class="home-hero-main" style="max-width: 65%;">
+                <div class="home-hero-pill" style="font-size: 10px; font-weight: 700; color: var(--gold-leaf); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 6px; border-color: rgba(212,175,55,0.2);">Active Status</div>
+                <div class="home-hero-highlight" id="homeHeroHeadline" style="font-size: 24px; font-weight: 700; color: #fff; letter-spacing: -0.5px;">New Season</div>
+                <div id="homeHeroSub" class="home-hero-sub" style="font-size: 13px; color: #9ca3af; margin-top: 6px; line-height: 1.4;">Set a spending target to deploy your metrics.</div>
               </div>
-              <div class="home-hero-right">
-                <div class="home-hero-right-label">League</div>
-                <div id="homeHeroLeague" class="home-hero-right-league">Bronze</div>
-                <div class="home-hero-right-trophies">
-                  Trophies: <span id="homeHeroTrophies">0</span>
-                </div>
+              <div class="home-hero-right" style="text-align: right;">
+                <div class="home-hero-right-label" style="font-size: 9px; color: #6b7280; text-transform: uppercase; letter-spacing: 1px;">League</div>
+                <div id="homeHeroLeague" class="home-hero-right-league" style="font-size: 18px; font-weight: 700; color: #fff; margin-top: 2px;">Bronze</div>
+                <div class="home-hero-right-trophies" style="font-size: 11px; color: #9ca3af; margin-top: 4px;">Trophies: <span id="homeHeroTrophies" style="color: var(--gold-leaf); font-weight: bold;">0</span></div>
               </div>
             </div>
 
-            <div class="home-metrics-grid">
-              <div class="home-metric-card">
-                <div class="home-metric-label">Goal used</div>
-                <div class="home-metric-value" id="homeMetricGoal">0%</div>
+            <div class="home-metrics-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 20px;">
+              <div class="home-metric-card" style="background: rgba(255,255,255,0.01); border: 1px solid rgba(255,255,255,0.04); border-radius: 12px; padding: 14px; text-align: left;">
+                <div class="home-metric-label" style="font-size: 9px; color: #6b7280; text-transform: uppercase; letter-spacing: 1px;">Total Used</div>
+                <div class="home-metric-value" id="homeMetricGoal" style="font-size: 22px; font-weight: 700; color: #fff; margin-top: 4px;">0%</div>
               </div>
-              <div class="home-metric-card">
-                <div class="home-metric-label">Lifestyle load</div>
-                <div class="home-metric-value" id="homeMetricLifestyle">0%</div>
+              <div class="home-metric-card" style="background: rgba(255,255,255,0.01); border: 1px solid rgba(255,255,255,0.04); border-radius: 12px; padding: 14px; text-align: left;">
+                <div class="home-metric-label" style="font-size: 9px; color: var(--lifestyle); text-transform: uppercase; letter-spacing: 1px;">Lifestyle Load</div>
+                <div class="home-metric-value" id="homeMetricLifestyle" style="font-size: 22px; font-weight: 700; color: var(--lifestyle); margin-top: 4px;">0%</div>
               </div>
-              <div class="home-metric-card">
-                <div class="home-metric-label">Future you share</div>
-                <div class="home-metric-value" id="homeMetricFuture">0%</div>
+              <div class="home-metric-card" style="background: rgba(255,255,255,0.01); border: 1px solid rgba(255,255,255,0.04); border-radius: 12px; padding: 14px; text-align: left;">
+                <div class="home-metric-label" style="font-size: 9px; color: var(--essentials); text-transform: uppercase; letter-spacing: 1px;">Money Saved</div>
+                <div class="home-metric-value" id="homeMetricFuture" style="font-size: 22px; font-weight: 700; color: var(--essentials); margin-top: 4px;">0%</div>
               </div>
             </div>
           </div>
         </section>
 
-        <section id="system-grid">
-          <div class="sys-card">
-            <h2>System Objective</h2>
-            <ul>
-              <li>Detect spending moments.</li>
-              <li>Create real-time awareness.</li>
-              <li>Guide behavior with psychology.</li>
-              <li>Encourage long-term freedom.</li>
-            </ul>
-          </div>
-
-          <div class="sys-card">
-            <h2>Default Rule • 40•30•20•10</h2>
-            <p class="sys-note">
-              A starting point. Rules evolve with your behavior.
-            </p>
-            <ul>
-              <li>Essentials · 40%</li>
-              <li>Lifestyle · 30%</li>
-              <li>Investments · 20%</li>
-              <li>Savings · 10%</li>
-            </ul>
-          </div>
-
-          <div class="sys-card">
-            <h2>No Shame Engine</h2>
-            <p class="sys-note">Not a payment app. Not a bank.</p>
-            <ul>
-              <li>Does not process payments.</li>
-              <li>No bank credentials.</li>
-              <li>No data selling.</li>
-            </ul>
-          </div>
-
-          <div class="sys-card">
-            <h2>Payment Detection</h2>
-            <p class="sys-note">Spending moment = awareness trigger.</p>
-            <ul>
-              <li>Notification signals.</li>
-              <li>Timestamps.</li>
-              <li>Merchant metadata (when available).</li>
-            </ul>
-          </div>
+        <section id="home-mini" style="margin-bottom: 20px;">
+          <div class="mini-cards" id="homeMiniStats" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;"></div>
         </section>
 
-        <section id="home-mini">
-          <h3 class="mini-title">This Month’s Shape</h3>
-          <div class="mini-cards" id="homeMiniStats"></div>
-        </section>
-
-        <!-- TROPHY CTA CARD -->
         <section id="home-trophy-cta">
-          <div class="trophy-cta-card" onclick="switchScreen('trophies')">
-            <div class="trophy-cta-left">
-              <div class="trophy-cta-label">Monthly ladder</div>
-              <div class="trophy-cta-title">Your Trophy Story</div>
-              <div class="trophy-cta-sub">
-                Lock each month like a Clash season. Climb up, dip down, reset fresh.
-              </div>
+          <div class="trophy-cta-card" onclick="switchScreen('trophies')" style="background: linear-gradient(135deg, rgba(212,175,55,0.06) 0%, rgba(5,5,5,1) 100%); border: 1px solid rgba(212,175,55,0.22); border-radius: 16px; padding: 16px; display: flex; justify-content: space-between; align-items: center; cursor: pointer;">
+            <div class="trophy-cta-left" style="max-width: 75%;">
+              <div class="trophy-cta-label" style="font-size: 9px; color: var(--gold-leaf); text-transform: uppercase; letter-spacing: 1px; font-weight: 700;">Progression Ladder</div>
+              <div class="trophy-cta-title" style="font-size: 15px; font-weight: 700; color: #fff; margin-top: 2px;">Your Seasonal Journey</div>
+              <div class="trophy-cta-sub" style="font-size: 11px; color: #6b7280; margin-top: 4px; line-height: 1.4;">Auto-locks on the 1st of next month, or you can finalize it early to claim your trophies.</div>
             </div>
-            <div class="trophy-cta-right">
-              <div id="trophyLeagueBadgeHome" class="trophy-badge">Bronze</div>
-              <div class="trophy-cta-score">
-                <span id="trophyScoreHome">0</span>
-              </div>
+            <div class="trophy-cta-right" style="text-align: right;">
+              <div id="trophyLeagueBadgeHome" class="trophy-badge" style="margin-bottom: 4px;">Bronze</div>
+              <div class="trophy-cta-score" style="font-size: 20px; font-weight: 800; color: #fff;"><span id="trophyScoreHome">0</span></div>
             </div>
           </div>
         </section>
       </section>
-
+       
       <!-- MONTHLY PLAN / RULE -->
       <section class="screen hidden" id="screen-rule">
         <section id="setup-section">
@@ -374,17 +310,60 @@
         </section>
       </section>
 
-      <!-- ALERT LOG -->
-      <section class="screen hidden" id="screen-alerts">
-        <section id="alerts-log">
-          <h3 class="console-title">Alert Log</h3>
-          <p class="console-copy">
-            A gentle history of the moments your bars brushed their lines.
-          </p>
-          <div id="alertsHistory"></div>
-        </section>
-      </section>
+      <!-- ABOUT LOG -->
+     <section class="screen hidden" id="screen-about">
+  <section id="about-log" class="setup-card" style="background: rgba(15, 23, 42, 0.95); border: 1px solid rgba(212,175,55,0.3);">
+    <h2 class="hero-title" style="font-size: 20px; text-align: center; color: var(--gold-leaf);">SMART SPEND</h2>
+    <p class="hero-tagline" style="text-align: center; margin-bottom: 20px; font-size: 12px; color: #9ca3af;">Personal Expense Tracker</p>
+    
+    <div style="font-size: 13px; line-height: 1.6; color: #cbd5f5; display: flex; flex-direction: column; gap: 14px;">
+      
+      <div style="background: rgba(255,255,255,0.03); padding: 12px; border-radius: 10px; border-left: 3px solid var(--gold-leaf);">
+        <strong style="color: #fff; font-size: 14px;">Manual Expense Logging (No Auto-Fetch)</strong>
+        <p style="margin: 4px 0 0 0; font-size: 11px; color: #cbd5f5;">This is a premium manual spend tracker. It does not scan your SMS or fetch backend transactions automatically. You own your data by logging each outlay yourself, keeping you actively conscious of every transaction.</p>
+      </div>
+      
+      <div style="background: rgba(255,255,255,0.03); padding: 12px; border-radius: 10px; border-left: 3px solid var(--savings);">
+  <strong style="color: #fff; font-size: 14px;">Behavior-First Financial Gamification</strong>
+  <p style="margin: 4px 0 0 0; font-size: 11px; color: #cbd5f5;">Your money habits are linked to a tier system from Bronze to Legend. Instead of punishing restrictions, the algorithms scoring process awards structural trophies for long-term consistency, game-ifying data parameters.</p>
+</div>
 
+      <div style="background: rgba(255,255,255,0.03); padding: 12px; border-radius: 10px; border-left: 3px solid var(--essentials);">
+        <strong style="color: #fff; font-size: 14px;">Sandbox Local Database (100% Offline)</strong>
+        <p style="margin: 4px 0 0 0; font-size: 11px; color: #cbd5f5;">Unlike commercial trackers, your financial statements never touch a remote cloud server. The ledger architecture is compiled strictly inside your browser's local sandbox storage, guaranteeing total security.</p>
+      </div>
+
+      <div style="background: rgba(255,255,255,0.03); padding: 12px; border-radius: 10px; border-left: 3px solid var(--lifestyle);">
+        <strong style="color: #fff; font-size: 14px;">Categorized Budget Parameters</strong>
+        <p style="margin: 4px 0 0 0; font-size: 11px; color: #cbd5f5;">Every transaction is mapped directly into four target parameters: Essentials, Lifestyle, Investments, or Savings. This categorizing system calculates your real-time budget usage balance seamlessly.</p>
+      </div>
+      
+      <!-- ABOUT SECTION BLOCKS -->
+<div style="background: rgba(255,255,255,0.03); padding: 12px; border-radius: 10px; border-left: 3px solid var(--gold-leaf);">
+  <strong style="color: #fff; font-size: 14px;">Automated Monthly Reset Cycle</strong>
+  <p style="margin: 4px 0 0 0; font-size: 11px; color: #cbd5f5;">On the 1st of every month, the core shell automatically resets itself. It auto-finalizes your previous month's trophies and prompts you fresh to lock a new target. You don't have to manage month transitions manually.</p>
+</div>
+
+<div style="background: rgba(255,255,255,0.03); padding: 12px; border-radius: 10px; border-left: 3px solid #ff9500;">
+  <strong style="color: #fff; font-size: 14px;">Smart Timeline Continuation (No Backlog Traps)</strong>
+  <p style="margin: 4px 0 0 0; font-size: 11px; color: #cbd5f5;">If you miss tracking for a few months (e.g., you logged in Jan, skipped Feb-Mar, and return in April), commercial apps force you to fill old Jan backlogs first. Smart Spend automatically marks skipped periods as neutral 0-entries and lets you continue instantly from the current active month.</p>
+</div>
+
+<div style="background: rgba(255,255,255,0.03); padding: 12px; border-radius: 10px; border-left: 3px solid var(--essentials);">
+  <strong style="color: #fff; font-size: 14px;">Flexible Manual Finalization</strong>
+  <p style="margin: 4px 0 0 0; font-size: 11px; color: #cbd5f5;">While the system auto-locks your ledger on the 1st, you have complete control to finalize your billing cycle and secure your performance trophies early at any moment directly from the Trophies panel.</p>
+</div>
+
+<div style="background: rgba(255,255,255,0.03); padding: 12px; border-radius: 10px; border-left: 3px solid var(--invest);">
+  <strong style="color: #fff; font-size: 14px;">Instant Offline PWA Accessibility</strong>
+  <p style="margin: 4px 0 0 0; font-size: 11px; color: #cbd5f5;">Engineered as a Progressive Web App, this engine operates 100% independent of network configurations. It guarantees lightning-fast startups and reliable offline database transactions anywhere.</p>
+</div>
+
+
+
+    </div>
+  </section>
+</section>
       <!-- ADD SPEND -->
       <section class="screen hidden" id="screen-add">
         <section id="add-screen">
@@ -392,7 +371,7 @@
             <div class="add-primary-card">
               <h3 class="console-title">Record a Spend</h3>
               <p class="console-copy">
-                Log any spend here. Smart Spend just records the moment — nothing to
+                Log any spend here. Smart Spend just records the moment - nothing to
                 do with your bank.
               </p>
 
@@ -465,13 +444,19 @@
 
       <!-- TROPHIES -->
       <section class="screen hidden" id="screen-trophies">
+        <!-- PREMIUM MINIMAL BACK BUTTON -->
+        <div style="margin-bottom: 16px; text-align: left;">
+          <button onclick="switchScreen('home')" class="spend-btn" style="padding: 6px 14px; border-color: rgba(255,255,255,0.15); display: inline-flex; align-items: center; gap: 6px; font-weight: 600; background: rgba(15,23,42,0.6); backdrop-filter: blur(10px); cursor: pointer;">
+            <span>←</span> Back to Home
+          </button>
+        </div>
         <section id="trophies-section">
           <div class="trophy-header-card">
             <div class="trophy-header-main">
               <div>
                 <div class="console-title">Monthly Trophies</div>
                 <p class="console-copy">
-                  Clash‑style ladder for your money story. Each month can move you up or down — gently.
+                  Clash‑style ladder for your money story. Each month can move you up or down gently.
                 </p>
               </div>
               <div class="trophy-score-shell">
@@ -499,31 +484,31 @@
           <div class="trophy-rules-card">
             <h3 class="mini-title">How Your Trophies Work</h3>
             <p class="console-copy">
-              Each month you get a hidden score (0–100). That score turns into trophies and slowly moves your league.
+              Each month you get a hidden score (0-100). That score turns into trophies and slowly moves your league.
             </p>
 
             <div class="trophy-rules-grid">
               <div class="trophy-rules-block">
                 <div class="trophy-rules-title">Monthly score → Trophies</div>
                 <ul class="trophy-rules-list">
-                  <li>Score 75–100 · +18 trophies</li>
-                  <li>Score 55–74 · +10 trophies</li>
-                  <li>Score 35–54 · +3 trophies</li>
-                  <li>Score 25–34 · 0 trophies</li>
-                  <li>Score 0–24 · −8 trophies</li>
+                  <li>Score 75-100 · +18 trophies</li>
+                  <li>Score 55-74 · +10 trophies</li>
+                  <li>Score 35-54 · +3 trophies</li>
+                  <li>Score 25-34 · 0 trophies</li>
+                  <li>Score 0-24 · −8 trophies</li>
                 </ul>
               </div>
 
               <div class="trophy-rules-block">
                 <div class="trophy-rules-title">Leagues & thresholds</div>
                 <ul class="trophy-rules-list">
-                  <li>0–39 · Bronze</li>
-                  <li>40–89 · Silver</li>
-                  <li>90–149 · Gold</li>
-                  <li>150–219 · Crystal</li>
-                  <li>220–299 · Master</li>
-                  <li>300–399 · Champion</li>
-                  <li>400+ · Legend</li>
+                  <li>0-29 · Bronze</li>
+                  <li>30-59 · Silver</li>
+                  <li>60-99 · Gold</li>
+                  <li>100-149 · Crystal</li>
+                  <li>150-299 · Master</li>
+                  <li>300-499 · Champion</li>
+                  <li>500+ · Legend</li>
                 </ul>
               </div>
 
@@ -560,9 +545,9 @@
         <span class="nav-icon">⚙️</span>
         <span class="nav-label">Monthly Plan</span>
       </button>
-      <button class="nav-item" data-target="alerts" onclick="switchScreen('alerts')">
-        <span class="nav-icon">🔔</span>
-        <span class="nav-label">Alerts</span>
+      <button class="nav-item" data-target="about" onclick="switchScreen('about')">
+        <span class="nav-icon">ℹ️</span>
+        <span class="nav-label">About</span>
       </button>
     </nav>
   </div>
@@ -617,7 +602,9 @@
 
 
   <!-- Confetti (once) + App script -->
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+
+
+<script defer src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
   <script src="script.js"></script>
   <script src="push.js"></script>
 
