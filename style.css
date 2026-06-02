@@ -1390,3 +1390,648 @@ select option {
 .banner-sub { font-size: 12px; color: #aaa; margin: 0; }
 .btn-install { background: white; color: black; border: none; padding: 8px 16px; border-radius: 5px; font-weight: bold; cursor: pointer; }
 .btn-close { background: none; border: none; color: white; font-size: 20px; cursor: pointer; margin-left: 10px; }
+
+/* =====================================================
+   ULTIMATE ROYAL BILLIONAIRE STATS SECTION
+   👑 KING'S THRONE ROOM AESTHETIC
+   ===================================================== */
+
+#live-section {
+  display: block;
+  padding: 12px;
+}
+
+.stats-layout-royal {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  gap: 32px;
+  align-items: center;
+}
+
+/* =========================================
+   ROYAL HERO CIRCULAR - 24K GOLD THRONE
+   ========================================= */
+.stats-hero-royal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.stats-royal-ring-outer {
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.stats-royal-ring-outer::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 0deg,
+    #ffd700 0deg,
+    #ffed4e 45deg,
+    #ffd700 90deg,
+    #ffed4e 135deg,
+    #ffd700 180deg,
+    #ffed4e 225deg,
+    #ffd700 270deg,
+    #ffed4e 315deg,
+    #ffd700 360deg
+  );
+  animation: royalRotate 20s linear infinite;
+  filter: drop-shadow(0 0 40px rgba(255, 215, 0, 0.6));
+}
+
+.stats-royal-ring-middle {
+  width: 280px;
+  height: 280px;
+  border-radius: 50%;
+  position: relative;
+  background: conic-gradient(
+    from 200deg,
+    rgba(52, 199, 89, 0.98) 0deg,
+    rgba(255, 149, 0, 0.98) 90deg,
+    rgba(175, 82, 222, 0.98) 180deg,
+    rgba(0, 122, 255, 0.98) 270deg,
+    rgba(52, 199, 89, 0.98) 360deg
+  );
+  padding: 5px;
+  box-shadow:
+    0 0 80px rgba(255, 215, 0, 0.5),
+    inset 0 0 60px rgba(255, 215, 0, 0.3);
+  animation: royalPulse 5s ease-in-out infinite alternate;
+}
+
+.stats-royal-ring-inner-gold {
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 215, 0, 0.3) 0%,
+    rgba(15, 23, 42, 0.98) 40%,
+    rgba(15, 23, 42, 0.98) 100%
+  );
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+  box-shadow: inset 0 0 0 2px rgba(255, 215, 0, 0.4);
+}
+
+.stats-royal-content {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.stats-royal-crown {
+  font-size: 32px;
+  margin-bottom: 8px;
+  animation: crownBounce 2s ease-in-out infinite;
+}
+
+@keyframes crownBounce {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-5px) scale(1.1);
+  }
+}
+
+.stats-royal-label {
+  font-size: 9px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  background: linear-gradient(135deg, #ffd700 0%, #ffed4e 50%, #ffd700 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 10px;
+  text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+}
+
+.stats-royal-value {
+  font-size: 56px;
+  font-weight: 900;
+  background: linear-gradient(135deg, #fff 0%, #ffd700 30%, #ffed4e 70%, #ffd700 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -2px;
+  line-height: 1;
+  text-shadow: 0 0 40px rgba(255, 215, 0, 0.6);
+  animation: valueShimmer 3s ease-in-out infinite;
+}
+
+@keyframes valueShimmer {
+  0%, 100% {
+    filter: brightness(1);
+  }
+  50% {
+    filter: brightness(1.3);
+  }
+}
+
+.stats-royal-tag {
+  margin-top: 12px;
+  font-size: 11px;
+  color: rgba(255, 215, 0, 0.8);
+  text-align: center;
+  max-width: 200px;
+  line-height: 1.6;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.stats-royal-glow-1 {
+  position: absolute;
+  inset: -30px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 30% 20%,
+    rgba(255, 215, 0, 0.2),
+    transparent 60%
+  );
+  filter: blur(40px);
+  animation: glowOrbit1 8s ease-in-out infinite;
+}
+
+.stats-royal-glow-2 {
+  position: absolute;
+  inset: -40px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 70% 80%,
+    rgba(255, 215, 0, 0.15),
+    transparent 70%
+  );
+  filter: blur(50px);
+  animation: glowOrbit2 10s ease-in-out infinite;
+}
+
+.stats-royal-orbit {
+  position: absolute;
+  inset: -50px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  border-top: 2px solid rgba(255, 215, 0, 0.4);
+  border-bottom: 2px solid rgba(255, 215, 0, 0.4);
+  animation: orbitRotate 15s linear infinite;
+}
+
+@keyframes orbitRotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes royalRotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes royalPulse {
+  0% {
+    transform: scale(1);
+    box-shadow:
+      0 0 80px rgba(255, 215, 0, 0.5),
+      inset 0 0 60px rgba(255, 215, 0, 0.3);
+  }
+  100% {
+    transform: scale(1.04) translateY(-5px);
+    box-shadow:
+      0 0 120px rgba(255, 215, 0, 0.7),
+      inset 0 0 80px rgba(255, 215, 0, 0.4);
+  }
+}
+
+.stats-royal-shadow {
+  position: absolute;
+  bottom: -50px;
+  width: 220px;
+  height: 25px;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(255, 215, 0, 0.35),
+    transparent 70%
+  );
+  filter: blur(20px);
+  animation: shadowPulse 5s ease-in-out infinite alternate;
+}
+
+@keyframes shadowPulse {
+  0% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 0.8;
+  }
+}
+
+/* =========================================
+   ROYAL SIDE CARD - MARBLE THRONE
+   ========================================= */
+.stats-royal-side {
+  background: 
+    linear-gradient(
+      135deg,
+      rgba(255, 215, 0, 0.08) 0%,
+      rgba(15, 23, 42, 0.98) 50%,
+      rgba(15, 23, 42, 0.98) 100%
+    ),
+    url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffd700' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  border-radius: 28px;
+  padding: 32px;
+  border: 2px solid rgba(255, 215, 0, 0.35);
+  box-shadow:
+    0 40px 120px rgba(0, 0, 0, 0.95),
+    0 0 80px rgba(255, 215, 0, 0.2),
+    inset 0 0 60px rgba(255, 215, 0, 0.08);
+  backdrop-filter: blur(25px);
+  position: relative;
+  overflow: hidden;
+}
+
+.stats-royal-side::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 215, 0, 0.6) 25%,
+    rgba(255, 215, 0, 0.8) 50%,
+    rgba(255, 215, 0, 0.6) 75%,
+    transparent 100%
+  );
+  animation: shimmerLine 4s ease-in-out infinite;
+}
+
+@keyframes shimmerLine {
+  0%, 100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.stats-royal-header {
+  margin-bottom: 28px;
+  position: relative;
+}
+
+.stats-royal-title-block {
+  position: relative;
+  z-index: 2;
+}
+
+.stats-royal-badge {
+  display: inline-block;
+  padding: 6px 16px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.25), rgba(255, 215, 0, 0.1));
+  border: 1px solid rgba(255, 215, 0, 0.4);
+  font-size: 9px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #ffd700;
+  margin-bottom: 12px;
+  box-shadow: 0 4px 16px rgba(255, 215, 0, 0.2);
+}
+
+.stats-royal-title {
+  margin: 0 0 12px 0;
+  font-size: 16px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  background: linear-gradient(135deg, #fff 0%, #ffd700 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 0 40px rgba(255, 215, 0, 0.4);
+}
+
+.stats-royal-copy {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.75);
+  margin: 0;
+  line-height: 1.8;
+  font-weight: 500;
+}
+
+.stats-royal-decoration {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  width: 80px;
+  height: 80px;
+  background: radial-gradient(
+    circle at 30% 30%,
+    rgba(255, 215, 0, 0.12),
+    transparent 70%
+  );
+  border-radius: 50%;
+  pointer-events: none;
+  animation: decorationPulse 6s ease-in-out infinite;
+}
+
+@keyframes decorationPulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.9;
+  }
+}
+
+/* =========================================
+   ROYAL BARS GRID
+   ========================================= */
+.royal-bars-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.bar-row {
+  font-size: 11px;
+}
+
+.bar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.bar-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: #fff;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+.bar-percentage {
+  font-size: 11px;
+  font-weight: 700;
+  color: #ffd700;
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
+}
+
+.bar-bg {
+  width: 100%;
+  height: 14px;
+  border-radius: 999px;
+  background: 
+    radial-gradient(
+      circle at 0% 0%,
+      rgba(255, 215, 0, 0.15),
+      rgba(2, 6, 23, 0.98)
+    );
+  overflow: hidden;
+  box-shadow: 
+    inset 0 3px 8px rgba(0, 0, 0, 0.9),
+    inset 0 0 0 1px rgba(255, 215, 0, 0.2);
+}
+
+.bar-fill {
+  position: relative;
+  height: 100%;
+  width: 0;
+  border-radius: inherit;
+  overflow: hidden;
+  transition: width 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+  animation: royalLiquid 4s ease-in-out infinite;
+}
+
+.bar-fill::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.6) 0%,
+    rgba(255, 255, 255, 0.3) 40%,
+    rgba(255, 255, 255, 0.5) 60%,
+    rgba(255, 255, 255, 0.2) 100%
+  );
+  mix-blend-mode: overlay;
+  opacity: 0.8;
+  background-size: 60px 14px;
+  animation: royalWave 3s linear infinite;
+}
+
+.bar-fill::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50%;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.4),
+    transparent
+  );
+  border-radius: 14px 14px 0 0;
+}
+
+.bar-fill.essentials {
+  background: linear-gradient(135deg, #22c55e, var(--essentials), #4ade80);
+  box-shadow: 
+    0 0 30px rgba(52, 199, 89, 0.6),
+    inset 0 0 15px rgba(255, 255, 255, 0.4);
+}
+
+.bar-fill.lifestyle {
+  background: linear-gradient(135deg, #f97316, var(--lifestyle), #fb923c);
+  box-shadow: 
+    0 0 30px rgba(255, 149, 0, 0.6),
+    inset 0 0 15px rgba(255, 255, 255, 0.4);
+}
+
+.bar-fill.invest {
+  background: linear-gradient(135deg, #3b82f6, var(--invest), #60a5fa);
+  box-shadow: 
+    0 0 30px rgba(0, 122, 255, 0.6),
+    inset 0 0 15px rgba(255, 255, 255, 0.4);
+}
+
+.bar-fill.savings {
+  background: linear-gradient(135deg, #a855f7, var(--savings), #c084fc);
+  box-shadow: 
+    0 0 30px rgba(175, 82, 222, 0.6),
+    inset 0 0 15px rgba(255, 255, 255, 0.4);
+}
+
+@keyframes royalLiquid {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-1.5px);
+  }
+}
+
+@keyframes royalWave {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-60px);
+  }
+}
+
+/* =========================================
+   ROYAL ALERT PANEL
+   ========================================= */
+.royal-alert-panel {
+  min-height: 40px;
+  font-size: 11px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.alert-pill {
+  border-radius: 999px;
+  padding: 8px 16px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 2px solid rgba(255, 215, 0, 0.35);
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.15), rgba(15, 23, 42, 0.98));
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  box-shadow: 
+    0 6px 20px rgba(0, 0, 0, 0.7),
+    0 0 25px rgba(255, 215, 0, 0.2);
+  animation: alertRoyalFadeIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.alert-pill::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 215, 0, 0.2),
+    transparent
+  );
+  animation: alertShimmer 3s ease-in-out infinite;
+}
+
+@keyframes alertShimmer {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+.alert-soft {
+  border-color: rgba(74, 222, 128, 0.6);
+  color: #bbf7d0;
+  box-shadow: 
+    0 6px 20px rgba(0, 0, 0, 0.7),
+    0 0 25px rgba(74, 222, 128, 0.25);
+}
+
+.alert-warn {
+  border-color: rgba(249, 115, 22, 0.7);
+  color: #fed7aa;
+  box-shadow: 
+    0 6px 20px rgba(0, 0, 0, 0.7),
+    0 0 30px rgba(249, 115, 22, 0.3);
+}
+
+.alert-strong {
+  border-color: rgba(248, 113, 113, 0.8);
+  color: #fecaca;
+  box-shadow: 
+    0 6px 20px rgba(0, 0, 0, 0.7),
+    0 0 35px rgba(248, 113, 113, 0.35);
+}
+
+@keyframes alertRoyalFadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(10px) scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* =========================================
+   RESPONSIVE
+   ========================================= */
+@media (max-width: 900px) {
+  .stats-layout-royal {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  
+  .stats-royal-ring-outer {
+    width: 260px;
+    height: 260px;
+  }
+  
+  .stats-royal-ring-middle {
+    width: 240px;
+    height: 240px;
+  }
+  
+  .stats-royal-value {
+    font-size: 48px;
+  }
+  
+  .stats-royal-side {
+    padding: 24px;
+  }
+  
+  .stats-royal-title {
+    font-size: 14px;
+    letter-spacing: 3px;
+  }
+}
