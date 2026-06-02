@@ -22,8 +22,7 @@ let inputResolve = null;
 let currentScreenId = "screen-home";
 
 /* BOOT */
-
-window.onload = () => {
+document.addEventListener("DOMContentLoaded", () => {
   loadAll();
   checkMonthlyReset();
   const nowId = getCurrentMonthId();
@@ -37,26 +36,31 @@ window.onload = () => {
   setupModals();
   setupSpendsDelegation();
 
+  // FIX: Slow net independent automatic splash removal loop
   setTimeout(() => {
     const splash = document.getElementById("splash-screen");
-    splash.style.opacity = "0";
-    setTimeout(() => {
-      splash.classList.add("hidden");
-      document.getElementById("meme-flow").classList.remove("hidden");
-      playCinematicSequence();
-    }, 1000);
-  }, 2800);
+    if (splash) {
+      splash.style.opacity = "0";
+      setTimeout(() => {
+        splash.classList.add("hidden");
+        
+        // FIX: Directly unlocking app shell bypassing meme layout completely
+        const appShell = document.getElementById("app-shell");
+        if (appShell) appShell.classList.remove("hidden");
+        
+        initTiltCards();
+        renderLimits();
+        renderBarsAndAlerts();
+        renderHomeMini();
+        renderTrophiesScreen();
+        updateTrophyHeader();
+        updateHomeTrophyCTA();
+        renderSpendsList();
 
-  initTiltCards();
-  renderLimits();
-  renderBarsAndAlerts();
-  renderHomeMini();
-  renderTrophiesScreen();
-  updateTrophyHeader();
-  updateHomeTrophyCTA();
-  renderSpendsList();
-
-  selectMode(state.activeMode || "balanced");
+        selectMode(state.activeMode || "balanced");
+      }, 500);
+    }
+  }, 1200);
 
   // Ensure initial screen has active class
   const homeScreen = document.getElementById("screen-home");
@@ -64,10 +68,10 @@ window.onload = () => {
     homeScreen.classList.add("screen-active");
     
     if (Notification.permission === 'default') {
-    Notification.requestPermission();
+      Notification.requestPermission();
+    }
   }
-  }
-};
+});
 
 function getCurrentMonthId() {
   const d = new Date();
@@ -302,47 +306,6 @@ function checkMonthlyReset() {
   }
 }
 
-
-/* CINEMATIC */
-
-function playCinematicSequence() {
-  setTimeout(() => {
-    const flow = document.getElementById("meme-flow");
-    flow.style.filter = "brightness(4)";
-
-    setTimeout(() => {
-      flow.style.filter = "none";
-      document.getElementById("shock-moment").classList.add("hidden");
-      document.getElementById("success-moment").classList.remove("hidden");
-
-      confetti({
-        particleCount: 200,
-        spread: 80,
-        origin: { y: 0.7 },
-        colors: ["#FFDE00", "#D4AF37", "#ffffff"]
-      });
-
-      setTimeout(() => {
-        const flowElem = document.getElementById("meme-flow");
-        flowElem.style.transform = "translateY(-100vh)";
-        flowElem.style.transition = "1.8s cubic-bezier(0.85, 0, 0.15, 1)";
-
-        setTimeout(() => {
-          flowElem.classList.add("hidden");
-          document.getElementById("app-shell").classList.remove("hidden");
-          renderLimits();
-          renderBarsAndAlerts();
-          renderHomeMini();
-          renderTrophiesScreen();
-          updateTrophyHeader();
-          updateHomeTrophyCTA();
-          renderSpendsList();
-        }, 1500);
-      }, 5000);
-    }, 200);
-  }, 4500);
-}
-
 /* NAVIGATION WITH TRANSITIONS */
 
 function switchScreen(target) {
@@ -350,7 +313,7 @@ function switchScreen(target) {
     home: "screen-home",
     stats: "screen-stats",
     rule: "screen-rule",
-    alerts: "screen-alerts",
+    about: "screen-about",
     add: "screen-add",
     trophies: "screen-trophies"
   };
@@ -514,71 +477,77 @@ function renderHomeMini() {
 
   const goal = state.monthlyGoal || 0;
 
-  const card1 = document.createElement("div");
-  card1.className = "mini-card";
-  card1.innerHTML = `
-    <div>Total logged</div>
-    <strong>₹${totalSpent.toLocaleString()}</strong>
+  // Simple Cash Balances Layout for Instant Readability
+  mini.innerHTML = `
+    <div class="mini-card" style="background: rgba(255,255,255,0.01); border: 1px solid rgba(255,255,255,0.04); padding: 14px; border-radius: 12px;">
+      <div style="font-size: 10px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px;">Cash Logged</div>
+      <strong style="font-size: 16px; color: #fff; display: block; margin-top: 4px;">₹${totalSpent.toLocaleString()}</strong>
+    </div>
+    <div class="mini-card" style="background: rgba(255,255,255,0.01); border: 1px solid rgba(255,255,255,0.04); padding: 14px; border-radius: 12px;">
+      <div style="font-size: 10px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px;">Target Boundary</div>
+      <strong style="font-size: 16px; color: #fff; display: block; margin-top: 4px;">₹${goal.toLocaleString()}</strong>
+    </div>
   `;
-  mini.appendChild(card1);
 
-  const card2 = document.createElement("div");
-  card2.className = "mini-card";
-  const pct = goal > 0 ? Math.round((totalSpent / goal) * 100) : 0;
-  card2.innerHTML = `
-    <div>Goal usage</div>
-    <strong>${pct}%</strong>
-  `;
-  mini.appendChild(card2);
+  // Synchronizing Base Components
+  const league = getLeague(trophies);
+  if (document.getElementById("homeHeroLeague")) document.getElementById("homeHeroLeague").textContent = league;
+  if (document.getElementById("homeHeroTrophies")) document.getElementById("homeHeroTrophies").textContent = trophies.toString();
 
-  // NEW: home hero update
-  const heroHeadline = document.getElementById("homeHeroHeadline");
-  const heroSub = document.getElementById("homeHeroSub");
-  const heroLeague = document.getElementById("homeHeroLeague");
-  const heroTrophies = document.getElementById("homeHeroTrophies");
-
+  // --- AUTOMATIC DYNAMIC COLOR ENGINE START ---
+  
+  // 1. Total Goal used color matrix (0-80% White, 80-100% Orange, 100%+ Red)
   const metricGoal = document.getElementById("homeMetricGoal");
-  const metricLifestyle = document.getElementById("homeMetricLifestyle");
-  const metricFuture = document.getElementById("homeMetricFuture");
-
-  if (heroLeague && heroTrophies) {
-    const league = getLeague(trophies);
-    heroLeague.textContent = league;
-    heroTrophies.textContent = trophies.toString();
-  }
-
   if (metricGoal) {
     const gPct = goal > 0 ? Math.round((totalSpent / goal) * 100) : 0;
     metricGoal.textContent = `${gPct}%`;
+    if (gPct >= 100) metricGoal.style.color = "#f97373";      // Crimson Red
+    else if (gPct >= 80) metricGoal.style.color = "var(--lifestyle)"; // Alert Orange
+    else metricGoal.style.color = "#fff";                     // Pure White
   }
 
+  // 2. Lifestyle Load color matrix (0-70% Green/Normal, 70-100% Orange, 100%+ Red)
   const lifeLimit = state.limits.lifestyle || 0;
   const life = state.spent.lifestyle;
+  const metricLifestyle = document.getElementById("homeMetricLifestyle");
   if (metricLifestyle) {
     const lpct = lifeLimit > 0 ? Math.round((life / lifeLimit) * 100) : 0;
     metricLifestyle.textContent = lifeLimit ? `${lpct}%` : "—";
+    if (lpct >= 100) metricLifestyle.style.color = "#f97373"; // Crossed Red
+    else if (lpct >= 70) metricLifestyle.style.color = "var(--lifestyle)"; // Heavy Orange
+    else metricLifestyle.style.color = "var(--essentials)";   // Balanced Green
   }
 
+  // 3. Money Saved color matrix (0-39% Red, 40-99% Light Green, 100%+ Neon Green)
   const futureLimit = (state.limits.invest || 0) + (state.limits.savings || 0);
   const futureSpent = state.spent.invest + state.spent.savings;
+  const metricFuture = document.getElementById("homeMetricFuture");
   if (metricFuture) {
     const fpct = futureLimit > 0 ? Math.round((futureSpent / futureLimit) * 100) : 0;
     metricFuture.textContent = futureLimit ? `${fpct}%` : "—";
+    if (fpct >= 100) metricFuture.style.color = "#4ade80";    // Solid Neon Green
+    else if (fpct >= 40) metricFuture.style.color = "#bbf7d0"; // Progress Soft Green
+    else metricFuture.style.color = "#fca5a5";                // Low Savings Soft Red
   }
+  
+  // --- AUTOMATIC DYNAMIC COLOR ENGINE END ---
 
-  if (heroHeadline && heroSub) {
+  // Premium Introspective Copywriting
+  const headline = document.getElementById("homeHeroHeadline");
+  const sub = document.getElementById("homeHeroSub");
+  if (headline && sub) {
     if (!goal) {
-      heroHeadline.textContent = "Clean slate month";
-      heroSub.textContent = "Lock a goal and rule to start your story.";
+      headline.textContent = "Deploy System Target";
+      sub.textContent = "Go to Monthly Plan to configure parameters and deploy your target spending baseline.";
     } else if (totalSpent === 0) {
-      heroHeadline.textContent = "Zero‑spend so far";
-      heroSub.textContent = "First swipe of the month decides the tone.";
+      headline.textContent = "Zero Transactions Logged";
+      sub.textContent = "Your sheet is completely clean. First transaction will deploy your system metrics.";
     } else if (totalSpent <= goal) {
-      heroHeadline.textContent = "You’re inside your goal";
-      heroSub.textContent = "Now the game is how much you gift to future‑you.";
+      headline.textContent = "Parameters Stable";
+      sub.textContent = "Conscious monitoring configuration active inside designated framework limits.";
     } else {
-      heroHeadline.textContent = "Goal crossed";
-      heroSub.textContent = "No guilt — just info for next season’s rule.";
+      headline.textContent = "Target Limit Crossed";
+      sub.textContent = "Boundary threshold exceeded. No guilt constraint — notice systemic patterns for next season.";
     }
   }
 }
@@ -646,7 +615,6 @@ function renderBarsAndAlerts() {
             class: "alert-soft",
             text:
               "Essentials spending is getting close to its limit. Stay aware and adjust if needed."
-
           });
         }
       } else if (cat === "lifestyle") {
@@ -655,7 +623,6 @@ function renderBarsAndAlerts() {
             class: "alert-strong",
             text:
               "Lifestyle spending has crossed the planned limit. Notice the pattern this month."
-
           });
           row.classList.add("shake-x");
         } else if (percentUsed >= 70) {
@@ -663,7 +630,6 @@ function renderBarsAndAlerts() {
             class: "alert-warn",
             text:
              "Lifestyle spending is getting heavy. If it still feels right, own it; if not, consider slowing down."
-
           });
           row.classList.add("shake-x");
         }
@@ -673,13 +639,11 @@ function renderBarsAndAlerts() {
             class: "alert-soft",
             text:
               "You added a small amount to future you today. Even small steps compound over time."
-
           });
         } else if (percentUsed >= 100) {
           alerts.push({
             class: "alert-soft",
             text: `You fully used your ${cat === "invest" ? "Investment" : "Savings"} allocation this month. That is a strong long‑term move.`
-
           });
         }
       }
@@ -701,9 +665,7 @@ function renderBarsAndAlerts() {
     });
   });
 
-  renderAlertsHistory();
-
-  // NEW: stats hero update
+  // stats hero update
   const totalSpent =
     state.spent.essentials +
     state.spent.lifestyle +
@@ -730,27 +692,6 @@ function renderBarsAndAlerts() {
       heroTagEl.textContent = "Goal crossed. Notice the story, not the shame.";
     }
   }
-}
-
-/* ALERT LOG */
-
-function renderAlertsHistory() {
-  const box = document.getElementById("alertsHistory");
-  if (!box) return;
-  box.innerHTML = "";
-  if (!state.alertsHistory.length) {
-    box.textContent = "No alerts yet. Your month is still quiet.";
-    return;
-  }
-  state.alertsHistory
-    .slice()
-    .reverse()
-    .forEach(a => {
-      const item = document.createElement("div");
-      item.className = "alert-history-item";
-      item.textContent = `${a.ts} • ${a.text}`;
-      box.appendChild(item);
-    });
 }
 
 /* ADD SPEND */
@@ -815,7 +756,7 @@ function addSpend(fromAddScreen = false) {
   appendSingleSpendRow(spendEntry);
   saveAll();
   
- const limit = state.limits[cat];
+  const limit = state.limits[cat];
   if (limit > 0) {
     const percentUsed = (state.spent[cat] / limit) * 100;
     
@@ -852,7 +793,6 @@ function addSpend(fromAddScreen = false) {
     }
   }
 }
-
 
 /* TROPHIES ENGINE: SCORE */
 
@@ -936,12 +876,12 @@ function calculateTrophyDelta(score, streakInfo) {
 /* LEAGUES */
 
 function getLeague(t) {
-  if (t >= 400) return "Legend";
+  if (t >= 500) return "Legend";
   if (t >= 300) return "Champion";
-  if (t >= 220) return "Master";
-  if (t >= 150) return "Crystal";
-  if (t >= 90)  return "Gold";
-  if (t >= 40)  return "Silver";
+  if (t >= 150) return "Master";
+  if (t >= 100) return "Crystal";
+  if (t >= 60)  return "Gold";
+  if (t >= 30)  return "Silver";
   return "Bronze";
 }
 
@@ -1008,7 +948,7 @@ function finalizeCurrentMonth(isAuto = false) {
     const saved = goal - spentTotal;
     extraMsg = ` You spent about ₹${Math.round(
       saved
-    ).toLocaleString()} less than your goal — that’s a quiet win.`;
+    ).toLocaleString()} less than your goal, that’s a quiet win.`;
   }
 
   history = history.filter(h => h.monthId !== currentId);
@@ -1018,7 +958,8 @@ function finalizeCurrentMonth(isAuto = false) {
     deltaT,
     trophiesAfter: trophies,
     league,
-    summary: summaryText + extraMsg
+    summary: summaryText + extraMsg,
+    actualSpent: spentTotal 
   });
 
   state.alertsHistory.push({
@@ -1035,7 +976,7 @@ function finalizeCurrentMonth(isAuto = false) {
 
   renderBarsAndAlerts();
   renderHomeMini();
-  renderAlertsHistory();
+  
   renderTrophiesScreen();
   updateTrophyHeader();
   updateHomeTrophyCTA();
@@ -1096,45 +1037,46 @@ function updateHomeTrophyCTA() {
 }
 
 function renderTrophiesScreen() {
-  const list = document.getElementById("trophyHistoryList");
-  if (!list) return;
-  list.innerHTML = "";
+    const list = document.getElementById("trophyHistoryList");
+    if (!list) return;
+    list.innerHTML = "";
 
-  if (!history.length) {
-    const empty = document.createElement("div");
-    empty.className = "trophy-empty";
-    empty.textContent = "No months locked yet. Finalize a month to start your ladder.";
-    list.appendChild(empty);
-    return;
-  }
+    if (!history.length) {
+        const empty = document.createElement("div");
+        empty.className = "trophy-empty";
+        empty.textContent = "No months locked yet. Finalize a month to start your ladder.";
+        list.appendChild(empty);
+        return;
+    }
 
-  const sorted = history
-    .slice()
-    .sort((a, b) => (a.monthId > b.monthId ? -1 : 1));
+    const sorted = history.slice().sort((a, b) => b.monthId.localeCompare(a.monthId));
 
-  sorted.forEach(h => {
-    const card = document.createElement("div");
-    card.className = "trophy-card";
+    sorted.forEach(h => {
+        const card = document.createElement("div");
+        card.className = "trophy-card";
 
-    const deltaClass = h.deltaT >= 0 ? "pos" : "neg";
-    const sign = h.deltaT > 0 ? "+" : "";
+        const deltaClass = h.deltaT >= 0 ? "pos" : "neg";
+        const sign = h.deltaT > 0 ? "+" : "";
 
-    card.innerHTML = `
-      <div class="trophy-card-main">
-        <div class="trophy-card-month">${monthLabelFromId(h.monthId)}</div>
-        <div class="trophy-card-summary">${h.summary}</div>
-      </div>
-      <div class="trophy-card-right">
-        <div class="trophy-card-delta ${deltaClass}">
-          ${sign}${h.deltaT} trophies
-        </div>
-        <div>${h.trophiesAfter} · ${h.league}</div>
-      </div>
-    `;
-    list.appendChild(card);
-  });
+        // YEH HAI WO CHANGE JO TUMHE CHAHIYE
+        const displayTotal = `Total Month Spend: ₹${(h.actualSpent || 0).toLocaleString()}`;
+
+        card.innerHTML = `
+            <div class="trophy-card-main">
+                <div class="trophy-card-month">${monthLabelFromId(h.monthId)}</div>
+                <div class="trophy-card-summary">${h.summary}</div>
+                <div style="font-size: 11px; color: var(--gold-leaf); margin-top: 6px; font-weight: 700;">
+                    ${displayTotal}
+                </div>
+            </div>
+            <div class="trophy-card-right">
+                <div class="trophy-card-delta ${deltaClass}">${sign}${h.deltaT} trophies</div>
+                <div style="margin-top: 4px; color: #6b7280; font-size: 10px;">${h.trophiesAfter} · ${h.league}</div>
+            </div>
+        `;
+        list.appendChild(card);
+    });
 }
-
 /* TILT EFFECT */
 
 function initTiltCards() {
@@ -1328,7 +1270,7 @@ async function fullResetAllData() {
   renderLimits();
   renderBarsAndAlerts();
   renderHomeMini();
-  renderAlertsHistory();
+  
   renderTrophiesScreen();
   updateTrophyHeader();
   updateHomeTrophyCTA();
@@ -1336,9 +1278,7 @@ async function fullResetAllData() {
   saveAll();
 }
 
-/* SERVICE WORKER + PWA BANNER */
-
-/* 🔥 AUTO UPDATE TOAST + PWA INSTALL */
+/* SERVICE WORKER + PWA BANNER AUTO UPDATE LOGIC */
 let newWorker;
 let deferredPrompt;
 const installBanner = document.getElementById('pwa-install-banner');
@@ -1380,27 +1320,33 @@ function showUpdateToast() {
   setTimeout(() => toast.remove(), 10000);
 }
 
-// PWA INSTALL BANNER (unchanged)
+// PWA INSTALL BANNER
 window.addEventListener('beforeinstallprompt', (e) => {
   e.preventDefault();
   deferredPrompt = e;
   setTimeout(() => {
-    installBanner.classList.add('show');
-    installBanner.classList.remove('hidden');
+    if(installBanner) {
+      installBanner.classList.add('show');
+      installBanner.classList.remove('hidden');
+    }
   }, 3000);
 });
 
-document.getElementById('btn-install-now').addEventListener('click', async () => {
-  if (deferredPrompt) {
-    deferredPrompt.prompt();
-    const { outcome } = await deferredPrompt.userChoice;
-    if (outcome === 'accepted') {
-      installBanner.classList.remove('show');
+if(document.getElementById('btn-install-now')) {
+  document.getElementById('btn-install-now').addEventListener('click', async () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      if (outcome === 'accepted') {
+        if(installBanner) installBanner.classList.remove('show');
+      }
+      deferredPrompt = null;
     }
-    deferredPrompt = null;
-  }
-});
+  });
+}
 
-document.getElementById('btn-close-banner').addEventListener('click', () => {
-  installBanner.classList.remove('show');
-});
+if(document.getElementById('btn-close-banner')) {
+  document.getElementById('btn-close-banner').addEventListener('click', () => {
+    if(installBanner) installBanner.classList.remove('show');
+  });
+}
