@@ -112,6 +112,18 @@ function loadAll() {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return;
     const parsed = JSON.parse(raw);
+    
+    // MIGRATION: Update old history records to include actualSpent
+    if (Array.isArray(parsed.history)) {
+      parsed.history = parsed.history.map(h => {
+        if (h.actualSpent === undefined) {
+          // Calculate spend from the summary or assume 0 if not available
+          h.actualSpent = 0; 
+        }
+        return h;
+      });
+    }
+
     if (parsed.state) state = Object.assign(state, parsed.state);
     if (typeof parsed.trophies === "number") trophies = parsed.trophies;
     if (Array.isArray(parsed.history)) history = parsed.history;
@@ -119,7 +131,6 @@ function loadAll() {
     console.warn("Load failed", e);
   }
 }
-
 /* CUSTOM MODALS */
 
 function setupModals() {
