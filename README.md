@@ -5,7 +5,7 @@
 Smart Spend is a real-time spending awareness system designed to rewire money behavior through psychology and gamification. Unlike traditional trackers that provide post-spend analysis, this system acts as a **Heads-Up Display (HUD)** for your financial life.
 
 ---
-Live - [Smart-Spend](https://github.com/srivastavayash100-oss/Smart-Spend)
+Live - [Smart-Spend](https://srivastavayash100-oss.github.io/Smart-Spend/)
 
 ## 🧠 The Philosophy
 Most people don't overspend because they want to; they overspend because they aren't **aware** in the moment. Smart Spend is built on the **40-30-20-10 Rule**, focusing on awareness over restriction and identity over guilt.
